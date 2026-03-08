@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🇺🇦 QR Вишиванка | Український QR Designer</title>
     
     <!-- Google Analytics 4 -->
@@ -14,76 +14,35 @@
       gtag('config', 'G-YELMN6CN7Q');
     </script>
     
-    <!-- Використовуємо node-qrcode для кращої підтримки UTF-8 -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <!-- Проста і надійна бібліотека qrcode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
-        :root {
-            --accent: #dc2626;
-            --accent-hover: #b91c1c;
-            --bg: #1a1a2e;
-            --panel: #16213e;
-            --panel-hover: #1f3460;
-            --text: #f8fafc;
-            --text-dim: #94a3b8;
-            --success: #10b981;
-            --border: rgba(255,255,255,0.1);
-            --vyshyvanka-red: #c41e3a;
-            --vyshyvanka-black: #1a1a1a;
-            --vyshyvanka-white: #f5f5f0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
             display: flex;
             justify-content: center;
-            padding: 16px;
+            padding: 20px;
             min-height: 100vh;
         }
         
-        .app-container {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 24px;
-            max-width: 1100px;
+        .container {
+            max-width: 500px;
             width: 100%;
-            align-items: start;
-        }
-        
-        @media (max-width: 900px) {
-            .app-container { grid-template-columns: 1fr; }
-        }
-        
-        .sidebar {
-            background: var(--panel);
-            padding: 24px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-            border: 1px solid rgba(196, 30, 58, 0.2);
-        }
-        
-        .main-view {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.03);
-            border-radius: 24px;
-            padding: 32px 24px;
-            border: 1px solid var(--border);
-            min-height: 400px;
         }
         
         h1 {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 10px;
             background: linear-gradient(135deg, #c41e3a, #f5f5f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -91,663 +50,445 @@
         }
         
         .subtitle {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-bottom: 20px;
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
         }
         
-        .group { margin-bottom: 18px; }
-        
-        label {
-            display: block;
-            font-size: 0.7rem;
-            opacity: 0.8;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        .card {
+            background: rgba(22, 33, 62, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(196, 30, 58, 0.3);
         }
         
-        input[type="text"], select, textarea {
+        textarea, select, input[type="text"] {
             width: 100%;
-            padding: 12px 14px;
+            padding: 15px;
+            margin: 10px 0 15px 0;
+            border-radius: 15px;
+            border: 2px solid #334155;
             background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 12px;
             color: white;
-            font-size: 14px;
-            transition: border-color 0.2s;
+            font-size: 16px;
+            transition: all 0.3s;
             font-family: inherit;
         }
         
         textarea {
+            min-height: 100px;
             resize: vertical;
-            min-height: 80px;
         }
         
-        input[type="text"]:focus, select:focus, textarea:focus {
+        textarea:focus, select:focus {
             outline: none;
-            border-color: var(--accent);
+            border-color: #c41e3a;
+            box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.2);
         }
         
-        input[type="file"] {
-            font-size: 12px;
-            color: var(--text-dim);
-            width: 100%;
+        .color-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
         }
         
-        .color-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .color-row div {
+            text-align: center;
+        }
+        
+        .color-row label {
+            display: block;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         
         input[type="color"] {
             width: 100%;
-            height: 44px;
-            border: none;
-            border-radius: 10px;
+            height: 50px;
+            border: 2px solid #334155;
+            border-radius: 12px;
             cursor: pointer;
             background: #0f172a;
-            padding: 4px;
+            padding: 5px;
         }
         
-        .file-upload-wrapper {
-            border: 2px dashed #334155;
-            padding: 14px;
-            border-radius: 12px;
-            text-align: center;
+        select {
             cursor: pointer;
-            transition: border-color 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
         }
-        .file-upload-wrapper:hover { border-color: var(--accent); }
         
-        .btn {
-            width: 100%;
-            padding: 14px;
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        button {
+            padding: 15px;
             border: none;
-            border-radius: 14px;
+            border-radius: 15px;
             font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 8px;
-            font-size: 14px;
-        }
-        
-        .btn-magic {
-            background: linear-gradient(135deg, #c41e3a, #8b0000);
+            transition: all 0.3s;
+            background: #c41e3a;
             color: white;
         }
-        .btn-magic:hover {
-            background: linear-gradient(135deg, #b91c1c, #7b0000);
+        
+        button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(196, 30, 58, 0.4);
+            box-shadow: 0 10px 25px rgba(196, 30, 58, 0.4);
         }
         
-        .btn-download {
-            background: linear-gradient(135deg, #10b981, #14b8a6);
-            color: white;
-            margin-top: 20px;
-            font-size: 15px;
+        button.secondary {
+            background: #1f3460;
         }
-        .btn-download:hover {
-            background: linear-gradient(135deg, #059669, #0d9488);
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.35);
-            transform: translateY(-2px);
+        
+        button.secondary:hover {
+            background: #2a3f7a;
+            box-shadow: 0 10px 25px rgba(31, 52, 96, 0.4);
         }
         
         #qrcode-container {
-            background: var(--vyshyvanka-white);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            background: #f5f5f0;
+            padding: 30px;
+            border-radius: 25px;
+            margin: 25px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-width: 350px;
-            min-height: 350px;
-            transition: all 0.3s;
-            border: 3px solid var(--vyshyvanka-red);
+            border: 3px solid #c41e3a;
         }
         
-        #qrcode-canvas {
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            width: 100%;
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #qrcode canvas {
+            max-width: 100%;
             height: auto;
-            max-width: 300px;
             border-radius: 10px;
         }
         
-        .style-preview {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .style-dot {
+        .download-btn {
             width: 100%;
-            aspect-ratio: 1;
-            border-radius: 6px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(135deg, #10b981, #059669);
         }
-        .style-dot.active { 
-            border-color: var(--accent); 
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.5);
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
         }
         
         .hint {
-            font-size: 11px;
-            color: var(--text-dim);
-            margin-top: 6px;
-            line-height: 1.4;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-top: 15px;
         }
         
-        .status {
-            font-size: 12px;
-            color: var(--success);
-            margin-top: 8px;
-            display: none;
-        }
-        .status.show { display: block; animation: fadeIn 0.3s; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Стилі для прев'ю пресетів */
-        .preset-traditional { 
-            background: repeating-linear-gradient(45deg, #c41e3a, #c41e3a 4px, #f5f5f0 4px, #f5f5f0 8px);
-        }
-        .preset-modern { 
-            background: linear-gradient(135deg, #1a1a2e, #c41e3a);
-        }
-        .preset-ethnic { 
-            background: 
-                linear-gradient(90deg, #c41e3a 2px, transparent 2px),
-                linear-gradient(#c41e3a 2px, transparent 2px);
-            background-size: 8px 8px;
-            background-color: #f5f5f0;
-        }
-        .preset-minimal { 
-            background: #1a1a1a;
-        }
-        .preset-festive { 
-            background: conic-gradient(#c41e3a, #f5f5f0, #1a1a1a, #c41e3a);
-        }
-        .preset-custom { 
-            background: radial-gradient(circle, #c41e3a, #8b0000);
-        }
-
-        .ornament-border {
-            position: relative;
-        }
-        .ornament-border::before {
-            content: '🇺🇦';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 20px;
-        }
-
-        .range-slider {
-            width: 100%;
-            margin-top: 8px;
-        }
-        .range-slider input {
-            width: 100%;
-            accent-color: var(--accent);
-        }
-        .range-value {
-            font-size: 11px;
-            color: var(--text-dim);
-            text-align: right;
-            margin-top: 4px;
-        }
-        
-        /* Прев'ю хрестиків */
-        .cross-preview {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-top: 8px;
-        }
-        .cross-preview-item {
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 4px;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
+        .test-buttons {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            background: var(--vyshyvanka-white);
-            color: var(--vyshyvanka-red);
-        }
-        .cross-preview-item.active {
-            border-color: var(--accent);
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(196, 30, 58, 0.4);
-        }
-        .cross-preview-item:hover {
-            background: rgba(196, 30, 58, 0.1);
+            gap: 10px;
+            margin-bottom: 15px;
         }
         
-        .test-link {
-            color: var(--accent);
-            text-decoration: none;
+        .test-btn {
+            flex: 1;
+            padding: 8px;
             font-size: 12px;
-            margin-top: 5px;
-            display: inline-block;
+            background: #334155;
         }
-        .test-link:hover {
-            text-decoration: underline;
+        
+        .test-btn:hover {
+            background: #475569;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #62748c;
+            font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
-
-<div class="app-container">
-    <div class="sidebar ornament-border">
+    <div class="container">
         <h1>🇺🇦 QR Вишиванка</h1>
-        <p class="subtitle">Український традиційний QR-код у стилі вишивки хрестиком</p>
+        <p class="subtitle">Український QR-код у стилі вишивки хрестиком</p>
         
-        <div class="group">
-            <label>🔗 Текст або URL (підтримує українську)</label>
-            <textarea id="qrText" placeholder="Введіть текст українською або посилання...">https://example.com</textarea>
-            <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-                <a href="#" class="test-link" onclick="setTestUkrainian(); return false;">🇺🇦 Тест: "Слава Україні!"</a>
-                <a href="#" class="test-link" onclick="setTestUrl(); return false;">🔗 Приклад URL</a>
+        <div class="card">
+            <!-- Тестові кнопки -->
+            <div class="test-buttons">
+                <button class="test-btn" onclick="setUkrainianText()">🇺🇦 Слава Україні!</button>
+                <button class="test-btn" onclick="setEnglishText()">🇬🇧 Hello World</button>
+                <button class="test-btn" onclick="setUrlText()">🔗 Приклад URL</button>
             </div>
-        </div>
-
-        <div class="group">
-            <label>🖼️ Логотип / Герб (опціонально)</label>
-            <div class="file-upload-wrapper">
-                <input type="file" id="logoFile" accept="image/png, image/jpeg">
-            </div>
-            <p id="fileName" class="status">✅ Лого завантажено</p>
-            <button class="btn" style="background: var(--panel-hover); margin-top: 5px;" onclick="clearLogo()">🗑️ Видалити лого</button>
-        </div>
-
-        <div class="group">
-            <label>🎨 Стиль вишивки</label>
-            <select id="stylePreset">
-                <option value="traditional">🌹 Традиційний (Червоний)</option>
-                <option value="modern">⚫ Сучасний (Чорний)</option>
-                <option value="ethnic">🌾 Етнічний (Бежевий)</option>
-                <option value="minimal">◻️ Мінімалізм</option>
-                <option value="festive">🎉 Святковий</option>
-                <option value="custom">✏️ Власний стиль</option>
-            </select>
-            <div class="style-preview">
-                <div class="style-dot preset-traditional" onclick="setPreset('traditional')" title="Традиційний"></div>
-                <div class="style-dot preset-modern" onclick="setPreset('modern')" title="Сучасний"></div>
-                <div class="style-dot preset-ethnic" onclick="setPreset('ethnic')" title="Етнічний"></div>
-                <div class="style-dot preset-minimal" onclick="setPreset('minimal')" title="Мінімалізм"></div>
-                <div class="style-dot preset-festive" onclick="setPreset('festive')" title="Святковий"></div>
-                <div class="style-dot preset-custom" onclick="setPreset('custom')" title="Власний"></div>
-            </div>
-        </div>
-
-        <div class="group">
-            <label>🧵 Тип хрестика</label>
-            <select id="crossType">
-                <option value="cross">✚ Простий хрестик</option>
-                <option value="double">✜ Подвійний хрестик</option>
-                <option value="filled">⬛ Заповнений</option>
-                <option value="square">◻️ Квадратний</option>
-            </select>
-            <div class="cross-preview">
-                <div class="cross-preview-item active" data-type="cross" onclick="setCrossType('cross')">✚</div>
-                <div class="cross-preview-item" data-type="double" onclick="setCrossType('double')">✜</div>
-                <div class="cross-preview-item" data-type="filled" onclick="setCrossType('filled')">⬛</div>
-                <div class="cross-preview-item" data-type="square" onclick="setCrossType('square')">◻️</div>
-            </div>
-        </div>
-
-        <div class="group">
-            <label>🎨 Кольори</label>
+            
+            <!-- Поле для тексту -->
+            <textarea id="qrText" placeholder="Введіть текст українською або посилання...">Слава Україні! 🇺🇦</textarea>
+            
+            <!-- Вибір кольорів -->
             <div class="color-row">
                 <div>
-                    <label style="font-size: 10px; margin-bottom: 4px;">Нитки (основний)</label>
+                    <label>🎨 Колір ниток</label>
                     <input type="color" id="colorDark" value="#c41e3a">
                 </div>
                 <div>
-                    <label style="font-size: 10px; margin-bottom: 4px;">Полотно (фон)</label>
+                    <label>🧵 Колір полотна</label>
                     <input type="color" id="colorLight" value="#f5f5f0">
                 </div>
             </div>
-        </div>
-
-        <div class="group">
-            <label>📐 Розмір модуля</label>
-            <div class="range-slider">
-                <input type="range" id="moduleSize" min="4" max="12" step="1" value="8">
-                <div class="range-value">Розмір: <span id="moduleSizeValue">8</span> px</div>
+            
+            <!-- Вибір стилю -->
+            <select id="crossType">
+                <option value="cross">✚ Простий хрестик (традиційний)</option>
+                <option value="double">✜ Подвійний хрестик</option>
+                <option value="filled">⬛ Заповнений хрестик</option>
+                <option value="square">◻️ Квадратний стібок</option>
+            </select>
+            
+            <!-- Кнопки керування -->
+            <div class="button-group">
+                <button onclick="generateQR()">🔄 Створити QR</button>
+                <button class="secondary" onclick="randomStyle()">🎲 Випадковий стиль</button>
             </div>
-        </div>
-
-        <button class="btn btn-magic" onclick="randomUkrainian()">🎲 Випадковий український стиль</button>
-        <button class="btn" style="background: var(--panel-hover); color: white; margin-top: 8px;" onclick="resetColors()">🔄 Скинути налаштування</button>
-    </div>
-
-    <div class="main-view">
-        <div id="qrcode-container">
-            <canvas id="qrcode-canvas"></canvas>
-        </div>
-        <div style="width: 100%; max-width: 340px; margin-top: 24px;">
-            <button class="btn btn-download" onclick="downloadPNG()">⬇️ Завантажити PNG</button>
-            <p class="hint" style="text-align: center; margin-top: 12px;">
-                🇺🇦 Тепер підтримує українську мову!<br>При скануванні відобразиться ваш текст.
+            
+            <!-- Контейнер для QR-коду -->
+            <div id="qrcode-container">
+                <div id="qrcode"></div>
+            </div>
+            
+            <!-- Кнопка завантаження -->
+            <button class="download-btn" onclick="downloadQR()">⬇️ Завантажити PNG</button>
+            
+            <p class="hint">
+                ✅ Підтримує українську мову • Працює на всіх пристроях<br>
+                При скануванні відобразиться ваш текст
             </p>
         </div>
+        
+        <div class="footer">
+            🇺🇦 З любов'ю до української культури
+        </div>
     </div>
-</div>
 
-<script>
-    // ==================== ГЛОБАЛЬНІ ЗМІННІ ====================
-    let currentLogo = null;
-    let logoImage = null;
-    const canvas = document.getElementById('qrcode-canvas');
-    const ctx = canvas.getContext('2d');
-
-    // ==================== КОНФІГУРАЦІЯ СТИЛІВ ====================
-    const STYLE_PRESETS = {
-        traditional: {
-            name: "Традиційний",
-            baseColor: '#c41e3a',
-            bgColor: '#f5f5f0'
-        },
-        modern: {
-            name: "Сучасний",
-            baseColor: '#1a1a1a',
-            bgColor: '#ffffff'
-        },
-        ethnic: {
-            name: "Етнічний",
-            baseColor: '#8b4513',
-            bgColor: '#f5e6d3'
-        },
-        minimal: {
-            name: "Мінімалізм",
-            baseColor: '#000000',
-            bgColor: '#ffffff'
-        },
-        festive: {
-            name: "Святковий",
-            baseColor: '#c41e3a',
-            bgColor: '#ffffff'
-        },
-        custom: {
-            name: "Власний",
-            baseColor: '#c41e3a',
-            bgColor: '#f5f5f0'
-        }
-    };
-
-    // ==================== ТИПИ ХРЕСТИКІВ ====================
-    function drawCross(ctx, x, y, size, color, type) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.fillStyle = color;
-        ctx.strokeStyle = color;
-        ctx.lineWidth = Math.max(2, size / 3);
-        
-        const half = size / 2;
-        const quarter = size / 4;
-        
-        switch(type) {
-            case 'cross': // Простий хрестик
-                ctx.beginPath();
-                ctx.moveTo(-half, -half);
-                ctx.lineTo(half, half);
-                ctx.moveTo(half, -half);
-                ctx.lineTo(-half, half);
-                ctx.stroke();
-                break;
-                
-            case 'double': // Подвійний хрестик
-                ctx.beginPath();
-                ctx.moveTo(-half, -half);
-                ctx.lineTo(half, half);
-                ctx.moveTo(half, -half);
-                ctx.lineTo(-half, half);
-                ctx.stroke();
-                
-                ctx.beginPath();
-                ctx.moveTo(-quarter, -half);
-                ctx.lineTo(quarter, half);
-                ctx.moveTo(quarter, -half);
-                ctx.lineTo(-quarter, half);
-                ctx.strokeStyle = color;
-                ctx.lineWidth = Math.max(1, size / 6);
-                ctx.stroke();
-                break;
-                
-            case 'filled': // Заповнений
-                ctx.fillRect(-half, -half, size, size);
-                ctx.fillStyle = 'white';
-                ctx.fillRect(-quarter, -quarter, size/2, size/2);
-                ctx.fillStyle = color;
-                break;
-                
-            case 'square': // Квадратний
-                ctx.strokeRect(-half, -half, size, size);
-                break;
-        }
-        
-        ctx.restore();
-    }
-
-    // ==================== ОСНОВНА ФУНКЦІЯ ГЕНЕРАЦІЇ ====================
-    async function generateQR() {
-        const text = document.getElementById('qrText').value.trim();
-        if (!text) {
-            alert('Будь ласка, введіть текст');
-            return;
+    <script>
+        // ==================== АНАЛІТИКА ====================
+        function trackEvent(action, label) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    'event_category': 'engagement',
+                    'event_label': label,
+                    'value': 1
+                });
+            }
+            console.log(`📊 Event: ${action} - ${label}`);
         }
 
-        const colorDark = document.getElementById('colorDark').value;
-        const colorLight = document.getElementById('colorLight').value;
-        const crossType = document.getElementById('crossType').value;
-        const moduleSize = parseInt(document.getElementById('moduleSize').value);
+        // ==================== ГЛОБАЛЬНІ ЗМІННІ ====================
+        let qrCodeInstance = null;
 
-        // Оновлюємо відображення значень
-        document.getElementById('moduleSizeValue').textContent = moduleSize;
+        // ==================== ФУНКЦІЯ ГЕНЕРАЦІЇ QR-КОДУ ====================
+        function generateQR() {
+            const text = document.getElementById('qrText').value.trim();
+            if (!text) {
+                alert('Будь ласка, введіть текст');
+                return;
+            }
 
-        try {
-            // Генеруємо матрицю QR-коду за допомогою бібліотеки qrcode
-            const qrData = await QRCode.toString(text, {
-                type: 'array',
-                errorCorrectionLevel: 'H',
-                margin: 2
+            const colorDark = document.getElementById('colorDark').value;
+            const colorLight = document.getElementById('colorLight').value;
+            const crossType = document.getElementById('crossType').value;
+
+            // Очищуємо контейнер
+            document.getElementById('qrcode').innerHTML = '';
+
+            // Створюємо новий QR-код
+            qrCodeInstance = new QRCode(document.getElementById('qrcode'), {
+                text: text,
+                width: 300,
+                height: 300,
+                colorDark: colorDark,
+                colorLight: colorLight,
+                correctLevel: QRCode.CorrectLevel.H
             });
 
-            // Встановлюємо розмір canvas
-            const matrix = qrData; // Це масив 0/1
-            const size = matrix.length;
-            canvas.width = size * moduleSize + 40; // + margin
-            canvas.height = size * moduleSize + 40;
-
-            // Малюємо фон
-            ctx.fillStyle = colorLight;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Малюємо QR-код з хрестиками
-            const offset = 20; // margin
-            
-            for (let row = 0; row < size; row++) {
-                for (let col = 0; col < size; col++) {
-                    if (matrix[row][col] === 1) {
-                        const x = offset + col * moduleSize + moduleSize / 2;
-                        const y = offset + row * moduleSize + moduleSize / 2;
-                        
-                        // Малюємо хрестик
-                        drawCross(ctx, x, y, moduleSize * 0.8, colorDark, crossType);
+            // Додаємо хрестики через невелику затримку
+            setTimeout(() => {
+                const canvas = document.querySelector('#qrcode canvas');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    ctx.lineWidth = 3;
+                    
+                    for (let x = 0; x < canvas.width; x += 20) {
+                        for (let y = 0; y < canvas.height; y += 20) {
+                            try {
+                                // Перевіряємо, чи це темний піксель
+                                const pixel = ctx.getImageData(x + 10, y + 10, 1, 1).data;
+                                
+                                // Якщо піксель темний (не білий)
+                                if (pixel[0] < 128 && pixel[1] < 128 && pixel[2] < 128) {
+                                    
+                                    switch(crossType) {
+                                        case 'cross': // Простий хрестик
+                                            ctx.strokeStyle = colorDark;
+                                            ctx.beginPath();
+                                            ctx.moveTo(x + 5, y + 5);
+                                            ctx.lineTo(x + 15, y + 15);
+                                            ctx.moveTo(x + 15, y + 5);
+                                            ctx.lineTo(x + 5, y + 15);
+                                            ctx.stroke();
+                                            break;
+                                            
+                                        case 'double': // Подвійний хрестик
+                                            ctx.strokeStyle = colorDark;
+                                            ctx.lineWidth = 2;
+                                            ctx.beginPath();
+                                            ctx.moveTo(x + 3, y + 3);
+                                            ctx.lineTo(x + 17, y + 17);
+                                            ctx.moveTo(x + 17, y + 3);
+                                            ctx.lineTo(x + 3, y + 17);
+                                            ctx.stroke();
+                                            
+                                            ctx.beginPath();
+                                            ctx.moveTo(x + 8, y + 8);
+                                            ctx.lineTo(x + 12, y + 12);
+                                            ctx.moveTo(x + 12, y + 8);
+                                            ctx.lineTo(x + 8, y + 12);
+                                            ctx.stroke();
+                                            break;
+                                            
+                                        case 'filled': // Заповнений хрестик
+                                            ctx.fillStyle = colorDark;
+                                            ctx.fillRect(x + 5, y + 5, 10, 10);
+                                            ctx.fillStyle = colorLight;
+                                            ctx.fillRect(x + 8, y + 8, 4, 4);
+                                            break;
+                                            
+                                        case 'square': // Квадратний стібок
+                                            ctx.strokeStyle = colorDark;
+                                            ctx.lineWidth = 2;
+                                            ctx.strokeRect(x + 5, y + 5, 10, 10);
+                                            break;
+                                    }
+                                }
+                            } catch (e) {
+                                // Ігноруємо помилки
+                            }
+                        }
                     }
                 }
-            }
-
-            // Додаємо логотип, якщо є
-            if (logoImage) {
-                const logoSize = moduleSize * 3; // Розмір лого
-                const logoX = (canvas.width - logoSize) / 2;
-                const logoY = (canvas.height - logoSize) / 2;
                 
-                // Малюємо білий фон для лого
-                ctx.fillStyle = colorLight;
-                ctx.fillRect(logoX - 5, logoY - 5, logoSize + 10, logoSize + 10);
+                // Оновлюємо стиль контейнера
+                document.getElementById('qrcode-container').style.background = colorLight;
+                document.getElementById('qrcode-container').style.borderColor = colorDark;
                 
-                // Малюємо лого
-                ctx.drawImage(logoImage, logoX, logoY, logoSize, logoSize);
-            }
-
-            // Оновлюємо стиль контейнера
-            document.getElementById('qrcode-container').style.background = colorLight;
-            document.getElementById('qrcode-container').style.borderColor = colorDark;
-
-        } catch (error) {
-            console.error('Error generating QR:', error);
-            alert('Помилка генерації QR-коду: ' + error.message);
+                trackEvent('generate_qr', crossType);
+            }, 150);
         }
-    }
 
-    // ==================== ФУНКЦІЇ УПРАВЛІННЯ ====================
-    function applyPreset() {
-        const presetKey = document.getElementById('stylePreset').value;
-        const preset = STYLE_PRESETS[presetKey];
-        
-        document.getElementById('colorDark').value = preset.baseColor;
-        document.getElementById('colorLight').value = preset.bgColor;
-        
-        document.querySelectorAll('.style-dot').forEach(dot => dot.classList.remove('active'));
-        const activeDot = document.querySelector(`.style-dot.preset-${presetKey}`);
-        if (activeDot) activeDot.classList.add('active');
-        
-        generateQR();
-    }
-
-    function setPreset(key) {
-        document.getElementById('stylePreset').value = key;
-        applyPreset();
-    }
-
-    function setCrossType(type) {
-        document.getElementById('crossType').value = type;
-        updateCrossPreview(type);
-        generateQR();
-    }
-
-    function updateCrossPreview(type) {
-        document.querySelectorAll('.cross-preview-item').forEach(item => {
-            item.classList.toggle('active', item.dataset.type === type);
-        });
-    }
-
-    function randomUkrainian() {
-        const ukrainian = ['traditional', 'ethnic', 'festive', 'modern'];
-        const random = ukrainian[Math.floor(Math.random() * ukrainian.length)];
-        setPreset(random);
-    }
-
-    function resetColors() {
-        const presetKey = document.getElementById('stylePreset').value;
-        const preset = STYLE_PRESETS[presetKey];
-        document.getElementById('colorDark').value = preset.baseColor;
-        document.getElementById('colorLight').value = preset.bgColor;
-        document.getElementById('moduleSize').value = 8;
-        document.getElementById('moduleSizeValue').textContent = '8';
-        document.getElementById('crossType').value = 'cross';
-        updateCrossPreview('cross');
-        clearLogo();
-        generateQR();
-    }
-
-    // ==================== ТЕСТОВІ ФУНКЦІЇ ====================
-    function setTestUkrainian() {
-        document.getElementById('qrText').value = 'Слава Україні! Героям слава! 🇺🇦';
-        generateQR();
-    }
-
-    function setTestUrl() {
-        document.getElementById('qrText').value = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-        generateQR();
-    }
-
-    // ==================== ЗАВАНТАЖЕННЯ ФАЙЛІВ ====================
-    function downloadPNG() {
-        if (!canvas.width) {
-            alert('QR-код ще не згенеровано');
-            return;
+        // ==================== ТЕСТОВІ ФУНКЦІЇ ====================
+        function setUkrainianText() {
+            document.getElementById('qrText').value = 'Слава Україні! Героям слава! 🇺🇦';
+            generateQR();
+            trackEvent('test_text', 'ukrainian');
         }
-        
-        gtag('event', 'download_qr', {
-            'event_category': 'engagement',
-            'event_label': 'PNG',
-            'value': 1
-        });
-        
-        const link = document.createElement('a');
-        link.download = 'qr-vyshyvanka-' + Date.now() + '.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    }
 
-    // ==================== ОБРОБКА ЛОГОТИПУ ====================
-    document.getElementById('logoFile').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = new Image();
-            img.onload = function() {
-                logoImage = img;
-                document.getElementById('fileName').classList.add('show');
-                generateQR();
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+        function setEnglishText() {
+            document.getElementById('qrText').value = 'Hello World! Glory to Ukraine!';
+            generateQR();
+            trackEvent('test_text', 'english');
+        }
 
-    function clearLogo() {
-        logoImage = null;
-        document.getElementById('logoFile').value = '';
-        document.getElementById('fileName').classList.remove('show');
-        generateQR();
-    }
+        function setUrlText() {
+            document.getElementById('qrText').value = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+            generateQR();
+            trackEvent('test_text', 'url');
+        }
 
-    // ==================== LIVE-ОНОВЛЕННЯ ====================
-    document.getElementById('qrText').addEventListener('input', generateQR);
-    document.getElementById('colorDark').addEventListener('input', generateQR);
-    document.getElementById('colorLight').addEventListener('input', generateQR);
-    document.getElementById('moduleSize').addEventListener('input', generateQR);
-    document.getElementById('stylePreset').addEventListener('change', applyPreset);
-    document.getElementById('crossType').addEventListener('change', function() {
-        updateCrossPreview(this.value);
-        generateQR();
-    });
+        // ==================== ВИПАДКОВИЙ СТИЛЬ ====================
+        function randomStyle() {
+            const colors = [
+                { dark: '#c41e3a', light: '#f5f5f0' }, // традиційний
+                { dark: '#1a1a1a', light: '#ffffff' }, // чорний
+                { dark: '#8b4513', light: '#f5e6d3' }, // коричневий
+                { dark: '#2e5c4b', light: '#e8f0e8' }, // зелений
+                { dark: '#9b2c2c', light: '#faf0e6' }, // бордовий
+                { dark: '#4a5568', light: '#f7fafc' }  // сірий
+            ];
+            
+            const types = ['cross', 'double', 'filled', 'square'];
+            
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            
+            document.getElementById('colorDark').value = randomColor.dark;
+            document.getElementById('colorLight').value = randomColor.light;
+            document.getElementById('crossType').value = randomType;
+            
+            generateQR();
+            trackEvent('random_style', randomType);
+        }
 
-    // ==================== ІНІЦІАЛІЗАЦІЯ ====================
-    window.addEventListener('load', () => {
-        document.querySelector('.style-dot.preset-traditional').classList.add('active');
-        updateCrossPreview('cross');
-        
-        setTimeout(() => {
-            if (typeof QRCode !== 'undefined') {
-                generateQR();
-            } else {
-                console.error('QRCode library not loaded');
+        // ==================== ЗАВАНТАЖЕННЯ ====================
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                alert('Спочатку створіть QR-код');
+                return;
             }
-        }, 500);
-    });
+            
+            const link = document.createElement('a');
+            link.download = 'qr-vyshyvanka-' + Date.now() + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            trackEvent('download_qr', 'png');
+        }
 
-    console.log('%c🇺🇦 QR Вишиванка з підтримкою української мови!', 'color: #c41e3a; font-size: 14px; font-weight: bold;');
-</script>
+        // ==================== СКИДАННЯ ====================
+        function resetToTraditional() {
+            document.getElementById('colorDark').value = '#c41e3a';
+            document.getElementById('colorLight').value = '#f5f5f0';
+            document.getElementById('crossType').value = 'cross';
+            generateQR();
+            trackEvent('reset', 'traditional');
+        }
 
+        // ==================== ІНІЦІАЛІЗАЦІЯ ====================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                generateQR();
+                trackEvent('page_load', 'success');
+            }, 200);
+            
+            // Додаємо клавішу Enter для генерації
+            document.getElementById('qrText').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    generateQR();
+                }
+            });
+        });
+
+        // Логування для перевірки
+        console.log('🇺🇦 QR Вишиванка завантажено!', new Date().toLocaleString());
+        console.log('📊 Google Analytics ID: G-YELMN6CN7Q');
+    </script>
 </body>
 </html>
