@@ -1,406 +1,171 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Соборна Писанка | Музей Писанкарства</title>
-  
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --bordo: #6a1e2a;
-      --bordo-light: #8b2f3c;
-      --gold: #c9a03d;
-      --gold-light: #e5b73b;
-      --cream: #f5eee6;
-      --brown: #4a2c1a;
-      --beige: #e8d9c0;
-      --dark: #1a1a1a;
-      --font-heading: 'Cormorant Garamond', 'Times New Roman', serif;
-      --font-body: 'Open Sans', 'Helvetica', sans-serif;
-      --shadow-lg: 0 8px 32px rgba(106, 30, 42, 0.2);
-      --transition: all 0.3s ease;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: var(--font-body);
-      background-color: var(--cream);
-      color: var(--dark);
-      min-height: 100vh;
-      background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M30 5 L55 30 L30 55 L5 30 Z" fill="none" stroke="%23c9a03d" stroke-width="0.5" opacity="0.1"/></svg>');
-    }
-    
-    .hero {
-      text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(135deg, var(--bordo), var(--brown));
-      color: white;
-      margin-bottom: 40px;
-      border-radius: 0 0 50px 50px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .hero:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M30 5 L55 30 L30 55 L5 30 Z" fill="none" stroke="%23e5b73b" stroke-width="1" opacity="0.1"/></svg>');
-      opacity: 0.2;
-    }
-    
-    .hero h1 {
-      font-size: 48px;
-      color: var(--gold);
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      position: relative;
-    }
-    
-    @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 32px;
-      }
-    }
-    
-    .egg-animation {
-      width: 150px;
-      height: 210px;
-      margin: 30px auto;
-      background: radial-gradient(circle at 30% 30%, var(--gold), var(--bordo));
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      animation: float 3s ease-in-out infinite;
-      box-shadow: 0 20px 30px rgba(0,0,0,0.3);
-      position: relative;
-      border: 2px solid var(--gold);
-    }
-    
-    .egg-animation:after {
-      content: '🥚';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 60px;
-      opacity: 0.3;
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-    
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-    
-    @media (max-width: 768px) {
-      .steps {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-    }
-    
-    .step-card {
-      background: white;
-      padding: 30px;
-      text-align: center;
-      border: 1px solid var(--gold);
-      border-radius: 16px;
-      transition: var(--transition);
-      cursor: pointer;
-      box-shadow: var(--shadow-lg);
-    }
-    
-    .step-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 12px 40px rgba(106, 30, 42, 0.3);
-      border-color: var(--bordo);
-    }
-    
-    .step-number {
-      width: 50px;
-      height: 50px;
-      background: var(--bordo);
-      color: var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
-      margin: 0 auto 20px;
-      border: 2px solid var(--gold);
-    }
-    
-    .step-icon {
-      font-size: 48px;
-      margin-bottom: 20px;
-    }
-    
-    .step-card h3 {
-      margin-bottom: 10px;
-      color: var(--bordo);
-    }
-    
-    .qr-section {
-      text-align: center;
-      padding: 40px;
-      background: var(--beige);
-      border-radius: 30px;
-      margin: 40px auto;
-      max-width: 500px;
-      border: 2px solid var(--gold);
-      box-shadow: var(--shadow-lg);
-    }
-    
-    .qr-code {
-      width: 200px;
-      height: 200px;
-      background: white;
-      margin: 20px auto;
-      padding: 10px;
-      border-radius: 20px;
-      border: 2px solid var(--bordo);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .qr-placeholder {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, var(--bordo) 25%, var(--gold) 25%, var(--gold) 50%, var(--bordo) 50%, var(--bordo) 75%, var(--gold) 75%);
-      background-size: 20px 20px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 14px;
-      text-align: center;
-    }
-    
-    .stats-banner {
-      background: var(--bordo);
-      color: var(--gold);
-      padding: 15px;
-      text-align: center;
-      font-size: 18px;
-      margin: 20px 0;
-      border-top: 2px solid var(--gold);
-      border-bottom: 2px solid var(--gold);
-    }
-    
-    .footer {
-      text-align: center;
-      padding: 40px;
-      background: var(--bordo);
-      color: white;
-      margin-top: 60px;
-      position: relative;
-    }
-    
-    .footer:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    
-    .footer-logo {
-      font-size: 48px;
-      margin-bottom: 20px;
-    }
-    
-    .footer p {
-      margin: 10px 0;
-      opacity: 0.9;
-    }
-    
-    .region-count {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--bordo);
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate QR Designer | 2026 Edition</title>
+    <script src="https://cdn.jsdelivr.net/gh/ushelp/EasyQRCodeJS@master/dist/easy.qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --p: #6366f1; --bg: #f8fafc; --card: #ffffff; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 20px; color: #0f172a; margin: 0; }
+        .container { display: grid; grid-template-columns: 1fr 350px; gap: 20px; max-width: 1000px; width: 100%; }
+        
+        .panel { background: var(--card); padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); height: fit-content; }
+        .preview-area { background: var(--card); padding: 40px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+        
+        h2 { margin-top: 0; font-weight: 800; font-size: 1.25rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin: 20px 0 10px; font-weight: 700; }
+        
+        .field { margin-bottom: 15px; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+        input[type="text"], select { width: 100%; padding: 10px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-family: inherit; box-sizing: border-box; }
+        .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        input[type="color"] { width: 100%; height: 40px; border: none; border-radius: 8px; cursor: pointer; background: none; }
+
+        .presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .preset-btn { font-size: 0.7rem; padding: 8px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; transition: 0.2s; font-weight: 600; }
+        .preset-btn:hover { border-color: var(--p); color: var(--p); }
+
+        #qrcode { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        canvas { max-width: 100%; height: auto !important; }
+
+        .actions { width: 100%; margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        button.primary { background: var(--p); color: white; border: none; padding: 14px; border-radius: 14px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s; }
+        button.primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4); }
+        button.secondary { background: #10b981; color: white; border: none; padding: 12px; border-radius: 14px; font-weight: 700; cursor: pointer; }
+
+        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } .panel { order: 2; } .preview-area { order: 1; } }
+    </style>
 </head>
 <body>
-  <div class="hero">
-    <div class="egg-animation"></div>
-    <h1>🥚 СОБОРНА ПИСАНКА 🥚</h1>
-    <p style="font-size: 20px; max-width: 600px; margin: 20px auto;">
-      Інтерактивна AR-подорож у світ української писанки
-    </p>
-    <div class="region-count">14 регіонів України</div>
-  </div>
-  
-  <div class="steps">
-    <div class="step-card" onclick="location.href='phase1.html'">
-      <div class="step-number">1</div>
-      <div class="step-icon">🔮</div>
-      <h3>Поклик предків</h3>
-      <p>Дізнайся свій регіон через чарівне дзеркало</p>
+
+<div class="container">
+    <div class="preview-area">
+        <div id="qrcode"></div>
+        <div class="actions">
+            <button class="primary" onclick="generate()">Оновити дизайн ✨</button>
+            <button class="secondary" onclick="download()">Завантажити PNG ⬇️</button>
+        </div>
     </div>
-    
-    <div class="step-card" onclick="location.href='phase2.html'">
-      <div class="step-number">2</div>
-      <div class="step-icon">👆</div>
-      <h3>Оживи на долоні</h3>
-      <p>Керуй писанкою жестами пальців</p>
-    </div>
-    
-    <div class="step-card" onclick="location.href='phase3.html'">
-      <div class="step-number">3</div>
-      <div class="step-icon">⚡</div>
-      <h3>Передай енергію</h3>
-      <p>Залиш своє ім'я на спільній карті</p>
-    </div>
-    
-    <div class="step-card" onclick="location.href='dashboard.html'">
-      <div class="step-number">4</div>
-      <div class="step-icon">🥚</div>
-      <h3>Соборність</h3>
-      <p>Побач єднання всіх регіонів</p>
-    </div>
-  </div>
-  
-  <!-- Статистика з localStorage -->
-  <div class="stats-banner" id="statsBanner" style="display: none;">
-    <span id="participantsCount">0</span> учасників уже долучилися до Соборної Писанки!
-  </div>
-  
-  <div class="qr-section">
-    <h2 style="color: var(--bordo);">Скануй для участі</h2>
-    <div class="qr-code" id="qrCode">
-      <div class="qr-placeholder" id="qrPlaceholder">
-        QR-код<br>для мобільного
-      </div>
-    </div>
-    <p>Наведи камеру смартфона, щоб розпочати подорож</p>
-    <button class="btn" onclick="generateQR()" style="margin-top: 15px; padding: 8px 20px; font-size: 14px;">
-      Показати QR-код
-    </button>
-  </div>
-  
-  <div class="footer">
-    <div class="footer-logo">🥚</div>
-    <img src="assets/logo-museum.png" alt="Музей Писанкарства" style="height: 50px; margin-bottom: 20px; filter: brightness(0) invert(1);">
-    <p>Проєкт створено для Національного музею народного мистецтва Гуцульщини та Покуття</p>
-    <p>© 2025 | Соборна Писанка AR | 14 регіонів</p>
-  </div>
-  
-  <script>
-    // ============ СТАТИСТИКА ============
-    function updateStats() {
-      try {
-        const participants = JSON.parse(localStorage.getItem('pysanka_participants') || '[]');
-        const count = participants.length;
+
+    <div class="panel">
+        <h2>Налаштування</h2>
         
-        if (count > 0) {
-          document.getElementById('statsBanner').style.display = 'block';
-          document.getElementById('participantsCount').textContent = count;
-        }
-      } catch (e) {
-        console.log('Статистика не завантажена');
-      }
+        <div class="field">
+            <label>Вміст (URL/Текст)</label>
+            <input type="text" id="text" value="https://google.com">
+        </div>
+
+        <div class="section-title">Готові стилі</div>
+        <div class="presets">
+            <button class="preset-btn" onclick="applyPreset('neo')">Neon</button>
+            <button class="preset-btn" onclick="applyPreset('eco')">Eco</button>
+            <button class="preset-btn" onclick="applyPreset('metal')">Metal</button>
+            <button class="preset-btn" onclick="applyPreset('minimal')">Minimal</button>
+            <button class="preset-btn" onclick="applyPreset('pixel')">8-Bit</button>
+            <button class="preset-btn" onclick="applyPreset('soft')">Soft</button>
+        </div>
+
+        <div class="section-title">Кольори</div>
+        <div class="color-grid">
+            <div class="field">
+                <label>Початок</label>
+                <input type="color" id="c1" value="#6366f1">
+            </div>
+            <div class="field">
+                <label>Кінець</label>
+                <input type="color" id="c2" value="#a855f7">
+            </div>
+        </div>
+
+        <div class="section-title">Форма пікселів</div>
+        <select id="dotStyle">
+            <option value="1">Квадрати (Classic)</option>
+            <option value="0.4">Точки (Circle)</option>
+            <option value="0.75">Закруглені (Rounded)</option>
+        </select>
+
+        <div class="section-title">Центральне лого</div>
+        <div class="field">
+            <label>URL картинки</label>
+            <input type="text" id="logoUrl" value="https://cdn-icons-png.flaticon.com/512/25/25231.png">
+        </div>
+        <div class="field">
+            <label>Форма фону лого</label>
+            <select id="logoShape">
+                <option value="false">Круглий</option>
+                <option value="true">Квадратний</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script>
+    function applyPreset(name) {
+        const c1 = document.getElementById('c1');
+        const c2 = document.getElementById('c2');
+        const dots = document.getElementById('dotStyle');
+        
+        if(name === 'neo') { c1.value = '#ff00ff'; c2.value = '#00ffff'; dots.value = '1'; }
+        if(name === 'eco') { c1.value = '#065f46'; c2.value = '#34d399'; dots.value = '0.4'; }
+        if(name === 'metal') { c1.value = '#475569'; c2.value = '#cbd5e1'; dots.value = '0.75'; }
+        if(name === 'minimal') { c1.value = '#000000'; c2.value = '#000000'; dots.value = '1'; }
+        if(name === 'pixel') { c1.value = '#f59e0b'; c2.value = '#dc2626'; dots.value = '1'; }
+        if(name === 'soft') { c1.value = '#fb7185'; c2.value = '#f472b6'; dots.value = '0.75'; }
+        
+        generate();
     }
-    
-    // ============ QR-КОД ============
-    function generateQR() {
-      const qrPlaceholder = document.getElementById('qrPlaceholder');
-      const currentUrl = window.location.href;
-      
-      // Простий варіант - текстове посилання
-      qrPlaceholder.innerHTML = '🔗<br>' + currentUrl.replace('https://', '').substring(0, 20) + '...';
-      qrPlaceholder.style.background = 'linear-gradient(45deg, #6a1e2a, #c9a03d)';
-      qrPlaceholder.style.fontSize = '12px';
-      
-      // Тут можна підключити реальну бібліотеку QR-коду
-      // Наприклад: https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js
-      
-      alert('👉 Відскануй QR-код камерою смартфона, щоб розпочати!');
+
+    function generate() {
+        const container = document.getElementById("qrcode");
+        container.innerHTML = "";
+        
+        const config = {
+            text: document.getElementById("text").value,
+            width: 800, height: 800,
+            colorDark: document.getElementById("c1").value,
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H,
+            dotScale: parseFloat(document.getElementById("dotStyle").value),
+            
+            drawer: 'canvas',
+            colorDark: {
+                type: 'linear',
+                position: [0, 0, 1, 1],
+                colorStops: [
+                    { offset: 0, color: document.getElementById("c1").value },
+                    { offset: 1, color: document.getElementById("c2").value }
+                ]
+            },
+            
+            // Логотип
+            logo: document.getElementById("logoUrl").value,
+            logoWidth: 240,
+            logoHeight: 240,
+            logoBackgroundColor: '#ffffff',
+            logoBackgroundTransparent: document.getElementById("logoShape").value === "true",
+            
+            // Дизайн "очей" (позиційних маркерів)
+            PO: document.getElementById("c1").value, 
+            PI: document.getElementById("c2").value,
+            timing_V: document.getElementById("c1").value,
+            timing_H: document.getElementById("c2").value,
+        };
+
+        new QRCode(container, config);
     }
-    
-    // ============ ПЕРЕВІРКА РЕГІОНІВ ============
-    function checkRegion() {
-      const savedRegion = localStorage.getItem('pysanka_region');
-      if (savedRegion) {
-        try {
-          const region = JSON.parse(savedRegion);
-          console.log('Активний регіон:', region.name);
-        } catch (e) {}
-      }
+
+    function download() {
+        const canvas = document.querySelector("#qrcode canvas");
+        const link = document.createElement('a');
+        link.download = 'ai-qr-design.png';
+        link.href = canvas.toDataURL("image/png");
+        link.click();
     }
-    
-    // ============ ОЧИЩЕННЯ ДАНИХ (опціонально) ============
-    function resetAllData() {
-      if (confirm('Очистити всі дані про учасників?')) {
-        localStorage.removeItem('pysanka_participants');
-        localStorage.removeItem('pysanka_stats');
-        localStorage.removeItem('pysanka_region');
-        location.reload();
-      }
-    }
-    
-    // ============ ЗАПУСК ============
-    document.addEventListener('DOMContentLoaded', function() {
-      updateStats();
-      checkRegion();
-      
-      // Додаємо кнопку скидання (приховану, для розробника)
-      // можна активувати подвійним кліком на лого
-      document.querySelector('.footer-logo').addEventListener('dblclick', function() {
-        resetAllData();
-      });
-    });
-  </script>
-  
-  <style>
-    /* Додаткові стилі для кнопок */
-    .btn {
-      display: inline-block;
-      padding: 8px 20px;
-      background: transparent;
-      border: 2px solid var(--bordo);
-      color: var(--bordo);
-      font-family: var(--font-heading);
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: var(--transition);
-      text-decoration: none;
-      border-radius: 30px;
-    }
-    
-    .btn:hover {
-      background: var(--bordo);
-      color: white;
-    }
-  </style>
+
+    window.onload = generate;
+</script>
+
 </body>
 </html>
