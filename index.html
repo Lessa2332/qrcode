@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QR Designer Pro | Creative Styles</title>
+    <title>🇺🇦 QR Вишиванка | Український QR Designer</title>
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
     <style>
         :root {
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --bg: #0f172a;
-            --panel: #1e293b;
-            --panel-hover: #334155;
+            --accent: #dc2626;
+            --accent-hover: #b91c1c;
+            --bg: #1a1a2e;
+            --panel: #16213e;
+            --panel-hover: #1f3460;
             --text: #f8fafc;
             --text-dim: #94a3b8;
             --success: #10b981;
             --border: rgba(255,255,255,0.1);
+            --vyshyvanka-red: #c41e3a;
+            --vyshyvanka-black: #1a1a1a;
+            --vyshyvanka-white: #f5f5f0;
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +35,7 @@
         
         .app-container {
             display: grid;
-            grid-template-columns: 360px 1fr;
+            grid-template-columns: 380px 1fr;
             gap: 24px;
             max-width: 1100px;
             width: 100%;
@@ -51,6 +54,7 @@
             height: fit-content;
             position: sticky;
             top: 20px;
+            border: 1px solid rgba(196, 30, 58, 0.2);
         }
         
         .main-view {
@@ -66,12 +70,18 @@
         }
         
         h1 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #c41e3a, #f5f5f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 20px;
         }
         
         .group { margin-bottom: 18px; }
@@ -143,13 +153,13 @@
         }
         
         .btn-magic {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, #c41e3a, #8b0000);
             color: white;
         }
         .btn-magic:hover {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            background: linear-gradient(135deg, #b91c1c, #7b0000);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 8px 25px rgba(196, 30, 58, 0.4);
         }
         
         .btn-download {
@@ -165,16 +175,17 @@
         }
         
         #qrcode-container {
-            background: white;
-            padding: 24px;
+            background: var(--vyshyvanka-white);
+            padding: 30px;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.4);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-width: 280px;
-            min-height: 280px;
-            transition: box-shadow 0.3s;
+            min-width: 300px;
+            min-height: 300px;
+            transition: all 0.3s;
+            border: 3px solid var(--vyshyvanka-red);
         }
         
         .style-preview {
@@ -190,8 +201,14 @@
             cursor: pointer;
             border: 2px solid transparent;
             transition: all 0.2s;
+            background-size: cover;
+            background-position: center;
         }
-        .style-dot.active { border-color: var(--accent); transform: scale(1.05); }
+        .style-dot.active { 
+            border-color: var(--accent); 
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(196, 30, 58, 0.5);
+        }
         
         .hint {
             font-size: 11px;
@@ -211,19 +228,81 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Стилі для прев'ю пресетів */
-        .preset-liquid { background: linear-gradient(135deg, #c0c0c0, #808080); }
-        .preset-eco { background: linear-gradient(135deg, #4a7c25, #2d5016); }
-        .preset-retro { background: linear-gradient(135deg, #ff00ff, #00ffff); }
-        .preset-neon { background: linear-gradient(135deg, #00f3ff, #ff00aa); box-shadow: 0 0 15px #00f3ff; }
-        .preset-memphis { background: conic-gradient(#ff6b6b, #4ecdc4, #ffe66d, #ff6b6b); }
-        .preset-embroidery { background: repeating-linear-gradient(45deg, #8b4513, #8b4513 2px, #a0522d 2px, #a0522d 4px); }
+        .preset-traditional { 
+            background: repeating-linear-gradient(
+                45deg,
+                #c41e3a,
+                #c41e3a 4px,
+                #f5f5f0 4px,
+                #f5f5f0 8px
+            );
+        }
+        .preset-modern { 
+            background: linear-gradient(135deg, #1a1a2e, #c41e3a);
+        }
+        .preset-ethnic { 
+            background: 
+                linear-gradient(90deg, #c41e3a 2px, transparent 2px),
+                linear-gradient(#c41e3a 2px, transparent 2px);
+            background-size: 8px 8px;
+            background-color: #f5f5f0;
+        }
+        .preset-minimal { 
+            background: #1a1a1a;
+        }
+        .preset-festive { 
+            background: conic-gradient(#c41e3a, #f5f5f0, #1a1a1a, #c41e3a);
+        }
+        .preset-custom { 
+            background: radial-gradient(circle, #c41e3a, #8b0000);
+        }
+
+        .ornament-border {
+            position: relative;
+        }
+        .ornament-border::before {
+            content: '🇺🇦';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+        }
+
+        .range-slider {
+            width: 100%;
+            margin-top: 8px;
+        }
+        .range-slider input {
+            width: 100%;
+            accent-color: var(--accent);
+        }
+        .range-value {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .upload-section {
+            background: rgba(196, 30, 58, 0.1);
+            border: 1px solid rgba(196, 30, 58, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        .upload-section label {
+            color: #f5f5f0;
+            font-size: 11px;
+        }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="sidebar">
-        <h1>✨ QR Designer Pro</h1>
+    <div class="sidebar ornament-border">
+        <h1>🇺🇦 QR Вишиванка</h1>
+        <p class="subtitle">Український традиційний QR-код у стилі вишивки хрестиком</p>
         
         <div class="group">
             <label>🔗 Текст або URL</label>
@@ -231,178 +310,199 @@
         </div>
 
         <div class="group">
-            <label>🖼️ Логотип (опціонально)</label>
+            <label>🖼️ Логотип / Герб (опціонально)</label>
             <div class="file-upload-wrapper">
-                <input type="file" id="logoFile" accept="image/png, image/jpeg">
+                <input type="file" id="logoFile" accept="image/png, image/jpeg, image/svg+xml">
             </div>
             <p id="fileName" class="status">✅ Лого завантажено</p>
         </div>
 
         <div class="group">
-            <label>🎨 Стиль дизайну</label>
+            <label>🎨 Стиль вишивки</label>
             <select id="stylePreset" onchange="applyPreset()">
-                <option value="default">✨ Класичний</option>
-                <option value="liquid">🪙 Рідкий метал</option>
-                <option value="eco">🌿 Еко-стиль</option>
-                <option value="retro">🎮 Ретро 8-біт</option>
-                <option value="neon">💡 Неонова вивіска</option>
-                <option value="memphis">🔷 Мемфіс-абстракція</option>
-                <option value="embroidery">🧵 Вишивка</option>
+                <option value="traditional">🌹 Традиційний (Червоний)</option>
+                <option value="modern">⚫ Сучасний (Чорний)</option>
+                <option value="ethnic">🌾 Етнічний (Бежевий)</option>
+                <option value="minimal">◻️ Мінімалізм</option>
+                <option value="festive">🎉 Святковий</option>
+                <option value="custom">✏️ Власний стиль</option>
             </select>
             <div class="style-preview">
-                <div class="style-dot preset-liquid" onclick="setPreset('liquid')" title="Рідкий метал"></div>
-                <div class="style-dot preset-eco" onclick="setPreset('eco')" title="Еко-стиль"></div>
-                <div class="style-dot preset-retro" onclick="setPreset('retro')" title="Ретро"></div>
-                <div class="style-dot preset-neon" onclick="setPreset('neon')" title="Неон"></div>
-                <div class="style-dot preset-memphis" onclick="setPreset('memphis')" title="Мемфіс"></div>
-                <div class="style-dot preset-embroidery" onclick="setPreset('embroidery')" title="Вишивка"></div>
+                <div class="style-dot preset-traditional" onclick="setPreset('traditional')" title="Традиційний"></div>
+                <div class="style-dot preset-modern" onclick="setPreset('modern')" title="Сучасний"></div>
+                <div class="style-dot preset-ethnic" onclick="setPreset('ethnic')" title="Етнічний"></div>
+                <div class="style-dot preset-minimal" onclick="setPreset('minimal')" title="Мінімалізм"></div>
+                <div class="style-dot preset-festive" onclick="setPreset('festive')" title="Святковий"></div>
+                <div class="style-dot preset-custom" onclick="setPreset('custom')" title="Власний"></div>
             </div>
+        </div>
+
+        <div class="group">
+            <label>🧵 Тип хрестика</label>
+            <select id="crossType" onchange="generateQR()">
+                <option value="simple">Простий хрестик</option>
+                <option value="double">Подвійний хрестик</option>
+                <option value="filled">Заповнений</option>
+                <option value="square">Квадратний стібок</option>
+            </select>
         </div>
 
         <div class="group">
             <label>🎨 Кольори</label>
             <div class="color-row">
                 <div>
-                    <label style="font-size: 10px; margin-bottom: 4px;">Основний</label>
-                    <input type="color" id="colorDark" value="#1e1b4b">
+                    <label style="font-size: 10px; margin-bottom: 4px;">Нитки (основний)</label>
+                    <input type="color" id="colorDark" value="#c41e3a">
                 </div>
                 <div>
-                    <label style="font-size: 10px; margin-bottom: 4px;">Фон</label>
-                    <input type="color" id="colorLight" value="#ffffff">
+                    <label style="font-size: 10px; margin-bottom: 4px;">Полотно (фон)</label>
+                    <input type="color" id="colorLight" value="#f5f5f0">
                 </div>
             </div>
         </div>
 
         <div class="group">
-            <label>🔲 Форма пікселів</label>
-            <select id="dotType" onchange="generateQR()">
-                <option value="square">Квадрати</option>
-                <option value="rounded">Закруглені</option>
-                <option value="dots">Круглі точки</option>
-                <option value="classy">Елегантні</option>
-                <option value="extra-rounded">Дуже закруглені</option>
-            </select>
+            <label>📐 Розмір елементів</label>
+            <div class="range-slider">
+                <input type="range" id="dotSize" min="0.3" max="1.0" step="0.05" value="0.7" oninput="generateQR()">
+                <div class="range-value">Розмір: <span id="dotSizeValue">70</span>%</div>
+            </div>
+            <div class="range-slider" style="margin-top: 10px;">
+                <input type="range" id="logoSize" min="0.1" max="0.5" step="0.05" value="0.25" oninput="generateQR()">
+                <div class="range-value">Логотип: <span id="logoSizeValue">25</span>%</div>
+            </div>
         </div>
 
-        <button class="btn btn-magic" onclick="randomCreative()">🎲 Випадковий креатив</button>
-        <button class="btn" style="background: var(--panel-hover); color: white; margin-top: 8px;" onclick="resetColors()">🔄 Скинути кольори</button>
+        <div class="upload-section">
+            <label>📤 Власний патерн хрестика (SVG/PNG)</label>
+            <div class="file-upload-wrapper" style="margin-top: 8px; padding: 10px;">
+                <input type="file" id="customPattern" accept="image/svg+xml, image/png">
+            </div>
+            <p class="hint" style="margin-top: 6px;">
+                💡 Завантажте свій SVG з Illustrator для унікального стилю
+            </p>
+        </div>
+
+        <button class="btn btn-magic" onclick="randomUkrainian()">🎲 Випадковий український стиль</button>
+        <button class="btn" style="background: var(--panel-hover); color: white; margin-top: 8px;" onclick="resetColors()">🔄 Скинути налаштування</button>
     </div>
 
     <div class="main-view">
         <div id="qrcode-container"></div>
         <div style="width: 100%; max-width: 340px; margin-top: 24px;">
             <button class="btn btn-download" onclick="downloadPNG()">⬇️ Завантажити PNG</button>
-            <button class="btn" style="background: var(--panel-hover); color: white; margin-top: 10px;" onclick="downloadSVG()">⬇️ Завантажити SVG</button>
+            <button class="btn" style="background: var(--panel-hover); color: white; margin-top: 10px;" onclick="downloadSVG()">⬇️ Завантажити SVG (для друку)</button>
             <p class="hint" style="text-align: center; margin-top: 12px;">
-                💡 Порада: SVG — векторний формат, ідеальний для друку будь-якого розміру
+                🇺🇦 SVG — векторний формат, ідеальний для друку на вишиванках, пакетах, візитках
             </p>
         </div>
     </div>
 </div>
 
 <script>
+    // ==================== SVG ПАТЕРНИ УКРАЇНСЬКИХ ХРЕСТИКІВ ====================
+    const CROSS_PATTERNS = {
+        simple: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 20 L80 80 M80 20 L20 80' stroke='%23CURRENT_COLOR' stroke-width='12' stroke-linecap='round' fill='none'/%3E%3C/svg%3E`,
+        
+        double: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M15 15 L85 85 M85 15 L15 85' stroke='%23CURRENT_COLOR' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3Cpath d='M25 25 L75 75 M75 25 L25 75' stroke='%23CURRENT_COLOR' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3C/svg%3E`,
+        
+        filled: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 20 L80 80 M80 20 L20 80' stroke='%23CURRENT_COLOR' stroke-width='15' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='50' cy='50' r='8' fill='%23CURRENT_COLOR'/%3E%3C/svg%3E`,
+        
+        square: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='25' y='25' width='50' height='50' fill='none' stroke='%23CURRENT_COLOR' stroke-width='10'/%3E%3Cpath d='M25 25 L75 75 M75 25 L25 75' stroke='%23CURRENT_COLOR' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E`
+    };
+
     // ==================== КОНФІГУРАЦІЯ СТИЛІВ ====================
     const STYLE_PRESETS = {
-        default: {
-            name: "Класичний",
-            dotsOptions: { type: 'square', color: '#1e1b4b' },
-            cornersSquareOptions: { type: 'square', color: '#1e1b4b' },
-            cornersDotOptions: { type: 'square', color: '#1e1b4b' },
+        traditional: {
+            name: "Традиційний",
+            dotsOptions: { color: '#c41e3a' },
+            cornersSquareOptions: { type: 'square', color: '#c41e3a' },
+            cornersDotOptions: { type: 'square', color: '#c41e3a' },
+            backgroundOptions: { color: '#f5f5f0' },
+            imageOptions: { backgroundColor: '#f5f5f0', margin: 0 },
+            crossType: 'simple'
+        },
+        modern: {
+            name: "Сучасний",
+            dotsOptions: { color: '#1a1a1a' },
+            cornersSquareOptions: { type: 'square', color: '#1a1a1a' },
+            cornersDotOptions: { type: 'square', color: '#1a1a1a' },
             backgroundOptions: { color: '#ffffff' },
-            imageOptions: { backgroundColor: '#ffffff', margin: 0 }
+            imageOptions: { backgroundColor: '#ffffff', margin: 0 },
+            crossType: 'simple'
         },
-        liquid: {
-            name: "Рідкий метал",
-            dotsOptions: { 
-                type: 'classy', 
-                gradient: { type: 'linear', colorStops: [{ offset: 0, color: '#e0e0e0' }, { offset: 1, color: '#808080' }] }
-            },
-            cornersSquareOptions: { 
-                type: 'extra-rounded',
-                gradient: { type: 'linear', colorStops: [{ offset: 0, color: '#c0c0c0' }, { offset: 1, color: '#606060' }] }
-            },
-            cornersDotOptions: { type: 'square', color: '#a0a0a0' },
-            backgroundOptions: { color: '#ffffff' },
-            imageOptions: { backgroundColor: '#f5f5f5', margin: 0 },
-            cssGlow: '0 0 25px rgba(192, 192, 192, 0.5)'
-        },
-        eco: {
-            name: "Еко-стиль",
-            dotsOptions: { 
-                type: 'dots', 
-                gradient: { type: 'radial', colorStops: [{ offset: 0, color: '#4a7c25' }, { offset: 1, color: '#2d5016' }] }
-            },
-            cornersSquareOptions: { type: 'rounded', color: '#4a7c25' },
-            cornersDotOptions: { type: 'rounded', color: '#2d5016' },
-            backgroundOptions: { color: '#f8f4e9' },
-            imageOptions: { backgroundColor: '#f8f4e9', margin: 0 }
-        },
-        retro: {
-            name: "Ретро 8-біт",
-            dotsOptions: { 
-                type: 'square',
-                gradient: { type: 'linear', rotation: 45, colorStops: [{ offset: 0, color: '#ff00ff' }, { offset: 1, color: '#00ffff' }] }
-            },
-            cornersSquareOptions: { type: 'square', color: '#ff00ff' },
-            cornersDotOptions: { type: 'square', color: '#00ffff' },
-            backgroundOptions: { color: '#0a0a1a' },
-            imageOptions: { backgroundColor: '#000000', margin: 0 },
-            cssGlow: '0 0 15px #ff00ff, 0 0 30px #00ffff'
-        },
-        neon: {
-            name: "Неонова вивіска",
-            dotsOptions: { 
-                type: 'rounded',
-                gradient: { type: 'linear', colorStops: [{ offset: 0, color: '#00f3ff' }, { offset: 0.5, color: '#7b2fff' }, { offset: 1, color: '#ff00aa' }] }
-            },
-            cornersSquareOptions: { type: 'extra-rounded', color: '#ff00aa' },
-            cornersDotOptions: { type: 'extra-rounded', color: '#00f3ff' },
-            backgroundOptions: { color: '#050510' },
-            imageOptions: { backgroundColor: '#050510', margin: 0 },
-            cssGlow: '0 0 20px #00f3ff, 0 0 40px #ff00aa, 0 0 60px rgba(255,0,170,0.3)'
-        },
-        memphis: {
-            name: "Мемфіс-абстракція",
-            dotsOptions: { 
-                type: 'extra-rounded',
-                gradient: { type: 'radial', colorStops: [{ offset: 0, color: '#ff6b6b' }, { offset: 0.5, color: '#4ecdc4' }, { offset: 1, color: '#ffe66d' }] }
-            },
-            cornersSquareOptions: { type: 'rounded', color: '#4ecdc4' },
-            cornersDotOptions: { type: 'rounded', color: '#ffe66d' },
-            backgroundOptions: { color: '#f7fff7' },
-            imageOptions: { backgroundColor: '#f7fff7', margin: 0 }
-        },
-        embroidery: {
-            name: "Вишивка",
-            dotsOptions: { 
-                type: 'classy',
-                color: '#8b4513'
-            },
-            cornersSquareOptions: { type: 'square', color: '#654321' },
-            cornersDotOptions: { type: 'square', color: '#a0522d' },
+        ethnic: {
+            name: "Етнічний",
+            dotsOptions: { color: '#8b4513' },
+            cornersSquareOptions: { type: 'square', color: '#8b4513' },
+            cornersDotOptions: { type: 'square', color: '#8b4513' },
             backgroundOptions: { color: '#f5e6d3' },
-            imageOptions: { backgroundColor: '#f5e6d3', margin: 0 }
+            imageOptions: { backgroundColor: '#f5e6d3', margin: 0 },
+            crossType: 'double'
+        },
+        minimal: {
+            name: "Мінімалізм",
+            dotsOptions: { color: '#000000' },
+            cornersSquareOptions: { type: 'square', color: '#000000' },
+            cornersDotOptions: { type: 'square', color: '#000000' },
+            backgroundOptions: { color: '#ffffff' },
+            imageOptions: { backgroundColor: '#ffffff', margin: 0 },
+            crossType: 'square'
+        },
+        festive: {
+            name: "Святковий",
+            dotsOptions: { 
+                gradient: { 
+                    type: 'radial', 
+                    colorStops: [
+                        { offset: 0, color: '#c41e3a' }, 
+                        { offset: 0.5, color: '#ffd700' }, 
+                        { offset: 1, color: '#1a1a1a' }
+                    ] 
+                } 
+            },
+            cornersSquareOptions: { type: 'square', color: '#c41e3a' },
+            cornersDotOptions: { type: 'square', color: '#ffd700' },
+            backgroundOptions: { color: '#ffffff' },
+            imageOptions: { backgroundColor: '#ffffff', margin: 0 },
+            crossType: 'filled'
+        },
+        custom: {
+            name: "Власний",
+            dotsOptions: { color: '#c41e3a' },
+            cornersSquareOptions: { type: 'square', color: '#c41e3a' },
+            cornersDotOptions: { type: 'square', color: '#c41e3a' },
+            backgroundOptions: { color: '#f5f5f0' },
+            imageOptions: { backgroundColor: '#f5f5f0', margin: 0 },
+            crossType: 'simple'
         }
     };
 
     // ==================== ІНІЦІАЛІЗАЦІЯ ====================
     let qrCode;
     let currentLogo = null;
+    let customPattern = null;
     const container = document.getElementById('qrcode-container');
 
     // ==================== ОСНОВНА ФУНКЦІЯ ГЕНЕРАЦІЇ ====================
     function generateQR() {
         const text = document.getElementById('qrText').value.trim() || 'https://example.com';
         const presetKey = document.getElementById('stylePreset').value;
-        const preset = STYLE_PRESETS[presetKey] || STYLE_PRESETS.default;
+        const preset = STYLE_PRESETS[presetKey] || STYLE_PRESETS.traditional;
         const customColorDark = document.getElementById('colorDark').value;
         const customColorLight = document.getElementById('colorLight').value;
-        const dotType = document.getElementById('dotType').value;
+        const crossType = document.getElementById('crossType').value;
+        const dotSize = parseFloat(document.getElementById('dotSize').value);
+        const logoSize = parseFloat(document.getElementById('logoSize').value);
+
+        // Оновлюємо відображення значень повзунків
+        document.getElementById('dotSizeValue').textContent = Math.round(dotSize * 100);
+        document.getElementById('logoSizeValue').textContent = Math.round(logoSize * 100);
 
         // Глибоке копіювання конфігурації
         const config = JSON.parse(JSON.stringify(preset));
         
-        // Застосовуємо кастомні кольори, якщо це не градієнтний пресет
+        // Застосовуємо кастомні кольори
         if (!config.dotsOptions.gradient) {
             config.dotsOptions.color = customColorDark;
             config.cornersSquareOptions.color = customColorDark;
@@ -410,20 +510,38 @@
         }
         config.backgroundOptions.color = customColorLight;
         config.imageOptions.backgroundColor = customColorLight;
+
+        // Визначаємо тип пікселя (хрестик або стандартний)
+        const useCustomPattern = customPattern !== null;
+        const selectedCrossType = document.getElementById('stylePreset').value === 'custom' ? crossType : preset.crossType || crossType;
         
-        // Застосовуємо вибраний тип пікселів (якщо не переписано пресетом)
-        if (!preset.dotsOptions.type || presetKey === 'default') {
-            config.dotsOptions.type = dotType;
-            config.cornersSquareOptions.type = dotType === 'dots' ? 'circle' : dotType;
+        // Підготовка dotsOptions
+        if (useCustomPattern) {
+            config.dotsOptions = {
+                type: 'image',
+                image: customPattern,
+                imageSize: dotSize
+            };
+        } else {
+            // Використовуємо SVG патерн хрестика
+            let patternSvg = CROSS_PATTERNS[selectedCrossType] || CROSS_PATTERNS.simple;
+            // Замінюємо колір у SVG
+            patternSvg = patternSvg.replace(/%23CURRENT_COLOR/g, customColorDark.replace('#', '%23'));
+            
+            config.dotsOptions = {
+                type: 'image',
+                image: patternSvg,
+                imageSize: dotSize
+            };
         }
 
-        // Формуємо фінальну конфігурацію для qr-code-styling
+        // Формуємо фінальну конфігурацію
         const qrConfig = {
-            width: 400,
-            height: 400,
+            width: 500,
+            height: 500,
             type: 'canvas',
             data: text,
-            margin: 10,
+            margin: 15,
             qrOptions: { 
                 typeNumber: 0, 
                 mode: 'Byte', 
@@ -432,7 +550,7 @@
             imageOptions: {
                 ...config.imageOptions,
                 hideBackgroundDots: true,
-                imageSize: 0.3,
+                imageSize: logoSize,
                 crossOrigin: 'anonymous'
             },
             dotsOptions: config.dotsOptions,
@@ -454,9 +572,9 @@
             qrCode.append(container);
         }
 
-        // Застосовуємо CSS-ефекти (світіння тощо)
-        container.style.boxShadow = config.cssGlow || '0 20px 60px rgba(0,0,0,0.4)';
+        // Застосовуємо стиль контейнера
         container.style.background = config.backgroundOptions.color;
+        container.style.borderColor = customColorDark;
     }
 
     // ==================== ФУНКЦІЇ УПРАВЛІННЯ ====================
@@ -464,16 +582,18 @@
         const presetKey = document.getElementById('stylePreset').value;
         const preset = STYLE_PRESETS[presetKey];
         
-        // Оновлюємо кольори в інпутах для зручності
+        // Оновлюємо кольори в інпутах
         if (preset.dotsOptions.color && !preset.dotsOptions.gradient) {
             document.getElementById('colorDark').value = preset.dotsOptions.color;
         }
         document.getElementById('colorLight').value = preset.backgroundOptions.color;
-        if (preset.dotsOptions.type) {
-            document.getElementById('dotType').value = preset.dotsOptions.type;
+        
+        // Оновлюємо тип хрестика
+        if (preset.crossType) {
+            document.getElementById('crossType').value = preset.crossType;
         }
         
-        // Підсвічуємо активний пресет у прев'ю
+        // Підсвічуємо активний пресет
         document.querySelectorAll('.style-dot').forEach(dot => dot.classList.remove('active'));
         const activeDot = document.querySelector(`.style-dot.preset-${presetKey}`);
         if (activeDot) activeDot.classList.add('active');
@@ -486,17 +606,19 @@
         applyPreset();
     }
 
-    function randomCreative() {
-        const creative = ['liquid', 'eco', 'retro', 'neon', 'memphis', 'embroidery'];
-        const random = creative[Math.floor(Math.random() * creative.length)];
+    function randomUkrainian() {
+        const ukrainian = ['traditional', 'ethnic', 'festive', 'modern'];
+        const random = ukrainian[Math.floor(Math.random() * ukrainian.length)];
         setPreset(random);
     }
 
     function resetColors() {
         const presetKey = document.getElementById('stylePreset').value;
         const preset = STYLE_PRESETS[presetKey];
-        document.getElementById('colorDark').value = preset.dotsOptions.color || '#1e1b4b';
-        document.getElementById('colorLight').value = preset.backgroundOptions.color || '#ffffff';
+        document.getElementById('colorDark').value = preset.dotsOptions.color || '#c41e3a';
+        document.getElementById('colorLight').value = preset.backgroundOptions.color || '#f5f5f0';
+        document.getElementById('dotSize').value = 0.7;
+        document.getElementById('logoSize').value = 0.25;
         generateQR();
     }
 
@@ -505,7 +627,9 @@
         if (!qrCode) return;
         qrCode.download({ 
             extension: 'png', 
-            name: 'qr-design-' + Date.now() 
+            name: 'qr-vyshyvanka-' + Date.now(),
+            width: 1000,
+            height: 1000
         });
     }
 
@@ -513,7 +637,7 @@
         if (!qrCode) return;
         qrCode.download({ 
             extension: 'svg', 
-            name: 'qr-design-' + Date.now() 
+            name: 'qr-vyshyvanka-' + Date.now()
         });
     }
 
@@ -531,22 +655,33 @@
         reader.readAsDataURL(file);
     });
 
-    // ==================== LIVE-ОНОВЛЕННЯ ПРИ ВВОДІ ====================
+    // ==================== ОБРОБКА КАСТОМНОГО ПАТЕРНУ ====================
+    document.getElementById('customPattern').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            customPattern = event.target.result;
+            generateQR();
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // ==================== LIVE-ОНОВЛЕННЯ ====================
     document.getElementById('qrText').addEventListener('input', generateQR);
     document.getElementById('colorDark').addEventListener('input', generateQR);
     document.getElementById('colorLight').addEventListener('input', generateQR);
-    document.getElementById('dotType').addEventListener('change', generateQR);
 
-    // ==================== ІНІЦІАЛІЗАЦІЯ ПРИ ЗАВАНТАЖЕННІ ====================
+    // ==================== ІНІЦІАЛІЗАЦІЯ ====================
     window.addEventListener('load', () => {
-        // Встановлюємо активний прев'ю для дефолтного пресету
-        document.querySelector('.style-dot').classList.add('active');
+        document.querySelector('.style-dot.preset-traditional').classList.add('active');
         generateQR();
     });
 
-    // ==================== ДРУЖНІ ПОВІДОМЛЕННЯ В КОНСОЛІ ====================
-    console.log('%c✨ QR Designer Pro готовий!', 'color: #6366f1; font-size: 14px; font-weight: bold;');
-    console.log('%c💡 Порада: використовуйте SVG для друку великих форматів', 'color: #94a3b8; font-size: 11px;');
+    // ==================== КОНСОЛЬ ====================
+    console.log('%c🇺🇦 QR Вишиванка готовий!', 'color: #c41e3a; font-size: 14px; font-weight: bold;');
+    console.log('%c💡 Створено з любов'ю до української культури', 'color: #94a3b8; font-size: 11px;');
 </script>
 
 </body>
