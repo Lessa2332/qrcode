@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🇺🇦 QR Вишиванка | Український QR Designer</title>
-    <!-- ✅ ВИПРАВЛЕНО: прибрано пробіли в URL -->
+    
+    <!-- ✅ Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YELMN6CN7Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YELMN6CN7Q');
+    </script>
+    
+    <!-- QR Code Styling Library -->
     <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+    
     <style>
         :root {
             --accent: #dc2626;
@@ -278,18 +289,6 @@
             text-align: right;
             margin-top: 4px;
         }
-
-        .upload-section {
-            background: rgba(196, 30, 58, 0.1);
-            border: 1px solid rgba(196, 30, 58, 0.3);
-            border-radius: 12px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        .upload-section label {
-            color: #f5f5f0;
-            font-size: 11px;
-        }
     </style>
 </head>
 <body>
@@ -301,7 +300,6 @@
         
         <div class="group">
             <label>🔗 Текст або URL</label>
-            <!-- ✅ ВИПРАВЛЕНО: прибрано пробіли в value -->
             <input type="text" id="qrText" value="https://example.com" placeholder="Введіть посилання...">
         </div>
 
@@ -369,16 +367,6 @@
             </div>
         </div>
 
-        <div class="upload-section">
-            <label>📤 Власний патерн хрестика (SVG/PNG)</label>
-            <div class="file-upload-wrapper" style="margin-top: 8px; padding: 10px;">
-                <input type="file" id="customPattern" accept="image/svg+xml, image/png">
-            </div>
-            <p class="hint" style="margin-top: 6px;">
-                💡 Завантажте свій SVG з Illustrator для унікального стилю
-            </p>
-        </div>
-
         <button class="btn btn-magic" onclick="randomUkrainian()">🎲 Випадковий український стиль</button>
         <button class="btn" style="background: var(--panel-hover); color: white; margin-top: 8px;" onclick="resetColors()">🔄 Скинути налаштування</button>
     </div>
@@ -397,14 +385,15 @@
 
 <script>
     // ==================== SVG ПАТЕРНИ УКРАЇНСЬКИХ ХРЕСТИКІВ ====================
+    // 💡 ТУТ ТИ МОЖЕШ ДОДАТИ СВОЇ КАСТОМНІ SVG ПАТЕРНИ ПІЗНІШЕ
     const CROSS_PATTERNS = {
-        simple: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 20 L80 80 M80 20 L20 80' stroke='%23CURRENT_COLOR' stroke-width='12' stroke-linecap='round' fill='none'/%3E%3C/svg%3E`,
+        simple: `image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 20 L80 80 M80 20 L20 80' stroke='%23CURRENT_COLOR' stroke-width='12' stroke-linecap='round' fill='none'/%3E%3C/svg%3E`,
         
-        double: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M15 15 L85 85 M85 15 L15 85' stroke='%23CURRENT_COLOR' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3Cpath d='M25 25 L75 75 M75 25 L25 75' stroke='%23CURRENT_COLOR' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3C/svg%3E`,
+        double: `image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M15 15 L85 85 M85 15 L15 85' stroke='%23CURRENT_COLOR' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3Cpath d='M25 25 L75 75 M75 25 L25 75' stroke='%23CURRENT_COLOR' stroke-width='10' stroke-linecap='round' fill='none'/%3E%3C/svg%3E`,
         
         filled: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M20 20 L80 80 M80 20 L20 80' stroke='%23CURRENT_COLOR' stroke-width='15' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='50' cy='50' r='8' fill='%23CURRENT_COLOR'/%3E%3C/svg%3E`,
         
-        square: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='25' y='25' width='50' height='50' fill='none' stroke='%23CURRENT_COLOR' stroke-width='10'/%3E%3Cpath d='M25 25 L75 75 M75 25 L25 75' stroke='%23CURRENT_COLOR' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E`
+        square: `image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='25' y='25' width='50' height='50' fill='none' stroke='%23CURRENT_COLOR' stroke-width='10'/%3E%3Cpath d='M25 25 L75 75 M75 25 L25 75' stroke='%23CURRENT_COLOR' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E`
     };
 
     // ==================== КОНФІГУРАЦІЯ СТИЛІВ ====================
@@ -477,12 +466,10 @@
     // ==================== ІНІЦІАЛІЗАЦІЯ ====================
     let qrCode;
     let currentLogo = null;
-    let customPattern = null;
     const container = document.getElementById('qrcode-container');
 
     // ==================== ОСНОВНА ФУНКЦІЯ ГЕНЕРАЦІЇ ====================
     function generateQR() {
-        // ✅ ВИПРАВЛЕНО: прибрано пробіли в фолбек-значенні
         const text = document.getElementById('qrText').value.trim() || 'https://example.com';
         const presetKey = document.getElementById('stylePreset').value;
         const preset = STYLE_PRESETS[presetKey] || STYLE_PRESETS.traditional;
@@ -508,29 +495,17 @@
         config.backgroundOptions.color = customColorLight;
         config.imageOptions.backgroundColor = customColorLight;
 
-        // Визначаємо тип пікселя (хрестик або стандартний)
-        const useCustomPattern = customPattern !== null;
+        // Використовуємо SVG патерн хрестика
         const selectedCrossType = document.getElementById('stylePreset').value === 'custom' ? crossType : preset.crossType || crossType;
+        let patternSvg = CROSS_PATTERNS[selectedCrossType] || CROSS_PATTERNS.simple;
+        // Замінюємо колір у SVG
+        patternSvg = patternSvg.replace(/%23CURRENT_COLOR/g, customColorDark.replace('#', '%23'));
         
-        // Підготовка dotsOptions
-        if (useCustomPattern) {
-            config.dotsOptions = {
-                type: 'image',
-                image: customPattern,
-                imageSize: dotSize
-            };
-        } else {
-            // Використовуємо SVG патерн хрестика
-            let patternSvg = CROSS_PATTERNS[selectedCrossType] || CROSS_PATTERNS.simple;
-            // Замінюємо колір у SVG
-            patternSvg = patternSvg.replace(/%23CURRENT_COLOR/g, customColorDark.replace('#', '%23'));
-            
-            config.dotsOptions = {
-                type: 'image',
-                image: patternSvg,
-                imageSize: dotSize
-            };
-        }
+        config.dotsOptions = {
+            type: 'image',
+            image: patternSvg,
+            imageSize: dotSize
+        };
 
         // Формуємо фінальну конфігурацію
         const qrConfig = {
@@ -622,6 +597,13 @@
     // ==================== ЗАВАНТАЖЕННЯ ФАЙЛІВ ====================
     function downloadPNG() {
         if (!qrCode) return;
+        // 📊 GA4 Event: Завантаження PNG
+        gtag('event', 'download_qr', {
+            'event_category': 'engagement',
+            'event_label': 'PNG',
+            'value': 1
+        });
+        
         qrCode.download({ 
             extension: 'png', 
             name: 'qr-vyshyvanka-' + Date.now(),
@@ -632,6 +614,13 @@
 
     function downloadSVG() {
         if (!qrCode) return;
+        // 📊 GA4 Event: Завантаження SVG
+        gtag('event', 'download_qr', {
+            'event_category': 'engagement',
+            'event_label': 'SVG',
+            'value': 1
+        });
+        
         qrCode.download({ 
             extension: 'svg', 
             name: 'qr-vyshyvanka-' + Date.now()
@@ -652,19 +641,6 @@
         reader.readAsDataURL(file);
     });
 
-    // ==================== ОБРОБКА КАСТОМНОГО ПАТЕРНУ ====================
-    document.getElementById('customPattern').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            customPattern = event.target.result;
-            generateQR();
-        };
-        reader.readAsDataURL(file);
-    });
-
     // ==================== LIVE-ОНОВЛЕННЯ ====================
     document.getElementById('qrText').addEventListener('input', generateQR);
     document.getElementById('colorDark').addEventListener('input', generateQR);
@@ -677,7 +653,6 @@
     });
 
     // ==================== КОНСОЛЬ ====================
-    // ✅ ВИПРАВЛЕНО: використано подвійні лапки для рядка з апострофом
     console.log('%c🇺🇦 QR Вишиванка готовий!', 'color: #c41e3a; font-size: 14px; font-weight: bold;');
     console.log("%c💡 Створено з любов'ю до української культури", 'color: #94a3b8; font-size: 11px;');
 </script>
