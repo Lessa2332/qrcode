@@ -14,7 +14,7 @@
       gtag('config', 'G-YELMN6CN7Q');
     </script>
     
-    <!-- QR Code Styling Library - надійний CDN -->
+    <!-- QR Code Styling Library -->
     <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.min.js"></script>
     
     <style>
@@ -307,7 +307,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 24px;
             background: var(--vyshyvanka-white);
             color: var(--vyshyvanka-red);
         }
@@ -343,7 +343,7 @@
 
         <div class="group">
             <label>🎨 Стиль вишивки</label>
-            <select id="stylePreset" onchange="applyPreset()">
+            <select id="stylePreset">
                 <option value="traditional">🌹 Традиційний (Червоний)</option>
                 <option value="modern">⚫ Сучасний (Чорний)</option>
                 <option value="ethnic">🌾 Етнічний (Бежевий)</option>
@@ -363,13 +363,12 @@
 
         <div class="group">
             <label>🧵 Тип хрестика</label>
-            <select id="crossType" onchange="generateQR()">
+            <select id="crossType">
                 <option value="cross">✚ Простий хрестик</option>
                 <option value="double">✜ Подвійний хрестик</option>
                 <option value="filled">✙ Заповнений</option>
                 <option value="square">◈ Квадратний стібок</option>
             </select>
-            <!-- Візуальне прев'ю хрестиків -->
             <div class="cross-preview">
                 <div class="cross-preview-item active" data-type="cross" onclick="setCrossType('cross')">✚</div>
                 <div class="cross-preview-item" data-type="double" onclick="setCrossType('double')">✜</div>
@@ -393,14 +392,14 @@
         </div>
 
         <div class="group">
-            <label>📐 Розмір елементів</label>
+            <label>📐 Розмір хрестиків</label>
             <div class="range-slider">
-                <input type="range" id="dotSize" min="0.4" max="1.0" step="0.05" value="0.8" oninput="generateQR()">
-                <div class="range-value">Розмір: <span id="dotSizeValue">80</span>%</div>
+                <input type="range" id="dotSize" min="0.3" max="0.9" step="0.05" value="0.7">
+                <div class="range-value">Розмір: <span id="dotSizeValue">70</span>%</div>
             </div>
             <div class="range-slider" style="margin-top: 10px;">
-                <input type="range" id="logoSize" min="0.1" max="0.5" step="0.05" value="0.25" oninput="generateQR()">
-                <div class="range-value">Логотип: <span id="logoSizeValue">25</span>%</div>
+                <input type="range" id="logoSize" min="0.1" max="0.4" step="0.05" value="0.2">
+                <div class="range-value">Логотип: <span id="logoSizeValue">20</span>%</div>
             </div>
         </div>
 
@@ -426,105 +425,46 @@
         console.error('❌ QRCodeStyling library not loaded!');
     }
 
-    // ==================== ФУНКЦІЯ СТВОРЕННЯ SVG ХРЕСТИКІВ ====================
-    // Проста і надійна система: створюємо SVG → замінюємо колір → кодуємо
-    function createCrossSVG(color, type) {
-        const safeColor = color.replace('#', '%23');
-        
-        const patterns = {
-            cross: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <path d="M 25 25 L 75 75 M 75 25 L 25 75" 
-                      stroke="${safeColor}" 
-                      stroke-width="18" 
-                      stroke-linecap="round" 
-                      fill="none"/>
-            </svg>`,
-            
-            double: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <path d="M 20 20 L 80 80 M 80 20 L 20 80" 
-                      stroke="${safeColor}" 
-                      stroke-width="12" 
-                      stroke-linecap="round" 
-                      fill="none"/>
-                <path d="M 30 30 L 70 70 M 70 30 L 30 70" 
-                      stroke="${safeColor}" 
-                      stroke-width="12" 
-                      stroke-linecap="round" 
-                      fill="none"/>
-            </svg>`,
-            
-            filled: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <path d="M 25 25 L 75 75 M 75 25 L 25 75" 
-                      stroke="${safeColor}" 
-                      stroke-width="20" 
-                      stroke-linecap="round" 
-                      fill="none"/>
-                <circle cx="50" cy="50" r="10" fill="${safeColor}"/>
-            </svg>`,
-            
-            square: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                <rect x="22" y="22" width="56" height="56" 
-                      fill="none" 
-                      stroke="${safeColor}" 
-                      stroke-width="12"
-                      stroke-linejoin="round"/>
-                <path d="M 22 22 L 78 78 M 78 22 L 22 78" 
-                      stroke="${safeColor}" 
-                      stroke-width="8" 
-                      stroke-linecap="round"/>
-            </svg>`
-        };
-        
-        return patterns[type] || patterns.cross;
-    }
-
-    // Кодування SVG для data URL
-    function encodeSVGForQR(svgString) {
-        // Видаляємо зайві пробіли та переноси для компактного коду
-        const compact = svgString.replace(/\s+/g, ' ').trim();
-        // Кодуємо для UTF-8 data URL
-        return 'data:image/svg+xml;utf8,' + encodeURIComponent(compact);
-    }
-
     // ==================== КОНФІГУРАЦІЯ СТИЛІВ ====================
     const STYLE_PRESETS = {
         traditional: {
             name: "Традиційний",
             baseColor: '#c41e3a',
-            bgColor: '#f5f5f0',
-            crossType: 'cross'
+            bgColor: '#f5f5f0'
         },
         modern: {
             name: "Сучасний",
             baseColor: '#1a1a1a',
-            bgColor: '#ffffff',
-            crossType: 'square'
+            bgColor: '#ffffff'
         },
         ethnic: {
             name: "Етнічний",
             baseColor: '#8b4513',
-            bgColor: '#f5e6d3',
-            crossType: 'double'
+            bgColor: '#f5e6d3'
         },
         minimal: {
             name: "Мінімалізм",
             baseColor: '#000000',
-            bgColor: '#ffffff',
-            crossType: 'cross'
+            bgColor: '#ffffff'
         },
         festive: {
             name: "Святковий",
             baseColor: '#c41e3a',
-            bgColor: '#ffffff',
-            crossType: 'filled',
-            useGradient: true
+            bgColor: '#ffffff'
         },
         custom: {
             name: "Власний",
             baseColor: '#c41e3a',
-            bgColor: '#f5f5f0',
-            crossType: 'cross'
+            bgColor: '#f5f5f0'
         }
+    };
+
+    // ==================== ТИПИ ХРЕСТИКІВ ====================
+    const CROSS_TYPES = {
+        cross: { type: 'rounded' },           // Простий хрестик (заокруглені квадрати)
+        double: { type: 'dots' },              // Подвійний хрестик (точки)
+        filled: { type: 'extra-rounded' },      // Заповнений (дуже заокруглені)
+        square: { type: 'square' }              // Квадратний стібок (квадрати)
     };
 
     // ==================== ІНІЦІАЛІЗАЦІЯ ====================
@@ -535,10 +475,8 @@
     // ==================== ОСНОВНА ФУНКЦІЯ ГЕНЕРАЦІЇ ====================
     function generateQR() {
         const text = document.getElementById('qrText').value.trim() || 'https://example.com';
-        const presetKey = document.getElementById('stylePreset').value;
-        const preset = STYLE_PRESETS[presetKey] || STYLE_PRESETS.traditional;
-        const customColorDark = document.getElementById('colorDark').value;
-        const customColorLight = document.getElementById('colorLight').value;
+        const colorDark = document.getElementById('colorDark').value;
+        const colorLight = document.getElementById('colorLight').value;
         const crossType = document.getElementById('crossType').value;
         const dotSize = parseFloat(document.getElementById('dotSize').value);
         const logoSize = parseFloat(document.getElementById('logoSize').value);
@@ -547,32 +485,10 @@
         document.getElementById('dotSizeValue').textContent = Math.round(dotSize * 100);
         document.getElementById('logoSizeValue').textContent = Math.round(logoSize * 100);
 
-        // Визначаємо фінальний колір
-        const finalColor = preset.useGradient ? preset.baseColor : customColorDark;
-        const finalBg = customColorLight;
+        // Отримуємо тип хрестика
+        const crossStyle = CROSS_TYPES[crossType] || CROSS_TYPES.cross;
 
-        // Створюємо SVG патерн
-        const svgString = createCrossSVG(finalColor, preset.crossType || crossType);
-        const encodedSvg = encodeSVGForQR(svgString);
-
-        // Формуємо dotsOptions
-        const dotsOptions = preset.useGradient ? {
-            type: 'rounded',
-            gradient: {
-                type: 'radial',
-                colorStops: [
-                    { offset: 0, color: preset.baseColor },
-                    { offset: 0.5, color: '#ffd700' },
-                    { offset: 1, color: '#1a1a1a' }
-                ]
-            }
-        } : {
-            type: 'image',
-            image: encodedSvg,
-            imageSize: dotSize
-        };
-
-        // Формуємо фінальну конфігурацію
+        // Формуємо конфігурацію QR-коду
         const qrConfig = {
             width: 600,
             height: 600,
@@ -588,19 +504,23 @@
                 hideBackgroundDots: true,
                 imageSize: logoSize,
                 crossOrigin: 'anonymous',
-                backgroundColor: finalBg
+                margin: 5
             },
-            dotsOptions: dotsOptions,
+            dotsOptions: {
+                type: crossStyle.type,
+                color: colorDark,
+                roundSize: true
+            },
             cornersSquareOptions: {
-                type: 'square',
-                color: finalColor
+                type: 'extra-rounded',
+                color: colorDark
             },
             cornersDotOptions: {
-                type: 'square', 
-                color: finalColor
+                type: 'dot',
+                color: colorDark
             },
             backgroundOptions: {
-                color: finalBg
+                color: colorLight
             }
         };
 
@@ -619,22 +539,11 @@
             }
         } catch (error) {
             console.error('Error generating QR:', error);
-            // Fallback: прості квадрати, якщо SVG не працює
-            qrConfig.dotsOptions = {
-                type: 'square',
-                color: finalColor
-            };
-            if (qrCode) {
-                qrCode.update(qrConfig);
-            } else {
-                qrCode = new QRCodeStyling(qrConfig);
-                qrCode.append(container);
-            }
         }
 
         // Оновлюємо стиль контейнера
-        container.style.background = finalBg;
-        container.style.borderColor = finalColor;
+        container.style.background = colorLight;
+        container.style.borderColor = colorDark;
     }
 
     // ==================== ФУНКЦІЇ УПРАВЛІННЯ ====================
@@ -645,12 +554,6 @@
         // Оновлюємо кольори в інпутах
         document.getElementById('colorDark').value = preset.baseColor;
         document.getElementById('colorLight').value = preset.bgColor;
-        
-        // Оновлюємо тип хрестика
-        if (preset.crossType) {
-            document.getElementById('crossType').value = preset.crossType;
-            updateCrossPreview(preset.crossType);
-        }
         
         // Підсвічуємо активний пресет
         document.querySelectorAll('.style-dot').forEach(dot => dot.classList.remove('active'));
@@ -688,10 +591,10 @@
         const preset = STYLE_PRESETS[presetKey];
         document.getElementById('colorDark').value = preset.baseColor;
         document.getElementById('colorLight').value = preset.bgColor;
-        document.getElementById('dotSize').value = 0.8;
-        document.getElementById('logoSize').value = 0.25;
-        document.getElementById('crossType').value = preset.crossType || 'cross';
-        updateCrossPreview(preset.crossType || 'cross');
+        document.getElementById('dotSize').value = 0.7;
+        document.getElementById('logoSize').value = 0.2;
+        document.getElementById('crossType').value = 'cross';
+        updateCrossPreview('cross');
         generateQR();
     }
 
@@ -709,9 +612,7 @@
         
         qrCode.download({ 
             extension: 'png', 
-            name: 'qr-vyshyvanka-' + Date.now(),
-            width: 1000,
-            height: 1000
+            name: 'qr-vyshyvanka-' + Date.now()
         });
     }
 
@@ -741,6 +642,11 @@
         reader.onload = function(event) {
             currentLogo = event.target.result;
             document.getElementById('fileName').classList.add('show');
+            
+            // Трохи збільшуємо лого за замовчуванням
+            document.getElementById('logoSize').value = 0.25;
+            document.getElementById('logoSizeValue').textContent = '25';
+            
             generateQR();
         };
         reader.readAsDataURL(file);
@@ -750,6 +656,13 @@
     document.getElementById('qrText').addEventListener('input', generateQR);
     document.getElementById('colorDark').addEventListener('input', generateQR);
     document.getElementById('colorLight').addEventListener('input', generateQR);
+    document.getElementById('dotSize').addEventListener('input', generateQR);
+    document.getElementById('logoSize').addEventListener('input', generateQR);
+    document.getElementById('stylePreset').addEventListener('change', applyPreset);
+    document.getElementById('crossType').addEventListener('change', function() {
+        updateCrossPreview(this.value);
+        generateQR();
+    });
 
     // ==================== ІНІЦІАЛІЗАЦІЯ ====================
     window.addEventListener('load', () => {
