@@ -15,7 +15,7 @@
     </script>
    
     <!-- QR Code Library -->
-    <script src="https://davidshimjs.github.io/qrcodejs/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
    
     <style>
         :root {
@@ -293,28 +293,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- ========== НОВИЙ БЛОК МАСКИ ========== -->
-        <div class="group">
-            <label>🎭 Маска (центральний елемент)</label>
-            <select id="maskType" onchange="generateQR()">
-                <option value="none">Без маски</option>
-                <option value="circle">Коло</option>
-                <option value="square">Квадрат</option>
-                <option value="heart">Серце</option>
-                <option value="rhombus">Ромб</option>
-                <option value="tryzub">🇺🇦 Тризуб</option>
-            </select>
-            <div class="range-slider" style="margin-top: 10px;">
-                <input type="range" id="maskSize" min="2" max="8" step="1" value="4" oninput="updateMaskSize()">
-                <div class="range-value">Розмір маски: <span id="maskSizeValue">4</span> модулі</div>
-            </div>
-            <div class="range-slider" style="margin-top: 10px;">
-                <input type="range" id="maskOpacity" min="0" max="1" step="0.05" value="0.7" oninput="updateMaskOpacity()">
-                <div class="range-value">Прозорість: <span id="maskOpacityValue">70</span>%</div>
-            </div>
-        </div>
-
         <div class="group">
             <label>📐 Розмір елементів</label>
             <div class="range-slider">
@@ -412,64 +390,6 @@
 
         return elements.join('');
     }
-
-    // ==================== НОВА ФУНКЦІЯ МАЛЮВАННЯ МАСКИ ====================
-    function drawMask(svg, moduleCount, maskType, maskSizeModules, maskOpacity, colorDark, colorLight) {
-        if (maskType === 'none') return;
-
-        const size = maskSizeModules; // розмір в модулях
-        const center = moduleCount / 2;
-        const half = size / 2;
-
-        // Створюємо групу для маски
-        const maskGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        maskGroup.setAttribute("transform", `translate(${center}, ${center})`);
-
-        // Встановлюємо колір заливки (колір полотна) та обведення (колір ниток) з прозорістю
-        const fillColor = colorLight;
-        const strokeColor = colorDark;
-
-        let shape;
-        switch (maskType) {
-            case 'circle':
-                shape = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                shape.setAttribute("r", half);
-                break;
-            case 'square':
-                shape = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                shape.setAttribute("x", -half);
-                shape.setAttribute("y", -half);
-                shape.setAttribute("width", size);
-                shape.setAttribute("height", size);
-                break;
-            case 'heart':
-                shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                // Спрощений шлях серця
-                shape.setAttribute("d", `M 0,${-half*0.5} C ${-half},${-half*0.8} ${-half},${half*0.3} 0,${half*0.7} C ${half},${half*0.3} ${half},${-half*0.8} 0,${-half*0.5} Z`);
-                break;
-            case 'rhombus':
-                shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-                shape.setAttribute("points", `0,${-half} ${half},0 0,${half} ${-half},0`);
-                break;
-            case 'tryzub':
-                shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                // Спрощений шлях тризуба (малий герб України)
-                shape.setAttribute("d", `M 0,${-half*0.8} L ${half*0.4},${-half*0.2} L ${half*0.2},${half*0.3} L 0,${half*0.1} L ${-half*0.2},${half*0.3} L ${-half*0.4},${-half*0.2} Z`);
-                break;
-            default:
-                return;
-        }
-
-        shape.setAttribute("fill", fillColor);
-        shape.setAttribute("stroke", strokeColor);
-        shape.setAttribute("stroke-width", "0.3");
-        shape.setAttribute("fill-opacity", maskOpacity);
-        shape.setAttribute("stroke-opacity", "1");
-
-        maskGroup.appendChild(shape);
-        svg.appendChild(maskGroup);
-    }
-
     // ==================== ОСНОВНА ФУНКЦІЯ ГЕНЕРАЦІЇ ====================
     function generateQR() {
         const text = document.getElementById('qrText').value.trim() || 'https://example.com';
@@ -478,8 +398,8 @@
         const customColor = document.getElementById('colorDark').value;
         const customBg = document.getElementById('colorLight').value;
         const crossType = document.getElementById('crossType').value;
-        const dotSize = parseFloat(document.getElementById('dotSize').value);
-        const logoSize = parseFloat(document.getElementById('logoSize').value);
+        const dotSize = parseFloat(document.getElementById('dotSize').value) || 0.9;
+        const logoSize = parseFloat(document.getElementById('logoSize').value) || 0.25;
         document.getElementById('dotSizeValue').textContent = Math.round(dotSize * 100);
         document.getElementById('logoSizeValue').textContent = Math.round(logoSize * 100);
 
@@ -489,12 +409,23 @@
 
         // Генерація матриці QR
         const tempDiv = document.createElement('div');
-        const qrcode = new QRCode(tempDiv, {
-            text: text,
-            correctLevel: QRCode.CorrectLevel.H  // Висока корекція для сканування
-        });
+        let qrcode;
+        try {
+            qrcode = new QRCode(tempDiv, {
+                text: text,
+                correctLevel: QRCode.CorrectLevel.H  // Висока корекція для сканування
+            });
+        } catch (error) {
+            console.error('Error creating QR code:', error);
+            return;
+        }
         const modules = qrcode.modules;
         const moduleCount = qrcode.moduleCount;
+
+        if (!moduleCount || isNaN(moduleCount)) {
+            console.error('Invalid moduleCount:', moduleCount);
+            return;
+        }
 
         // Створення SVG (viewBox в одиницях модулів)
         const svgNS = "http://www.w3.org/2000/svg";
@@ -505,23 +436,23 @@
 
         // Фон (полотно)
         const bgRect = document.createElementNS(svgNS, "rect");
-        bgRect.setAttribute("width", moduleCount);
-        bgRect.setAttribute("height", moduleCount);
+        bgRect.setAttribute("width", moduleCount.toString());
+        bgRect.setAttribute("height", moduleCount.toString());
         bgRect.setAttribute("fill", finalBg);
         svg.appendChild(bgRect);
 
         // Опціонально: сітка для ефекту полотна
         for (let i = 0; i <= moduleCount; i++) {
             const hLine = document.createElementNS(svgNS, "line");
-            hLine.setAttribute("x1", 0); hLine.setAttribute("y1", i);
-            hLine.setAttribute("x2", moduleCount); hLine.setAttribute("y2", i);
-            hLine.setAttribute("stroke", "rgba(0,0,0,0.05)"); hLine.setAttribute("stroke-width", 0.02);
+            hLine.setAttribute("x1", "0"); hLine.setAttribute("y1", i.toString());
+            hLine.setAttribute("x2", moduleCount.toString()); hLine.setAttribute("y2", i.toString());
+            hLine.setAttribute("stroke", "rgba(0,0,0,0.05)"); hLine.setAttribute("stroke-width", "0.02");
             svg.appendChild(hLine);
 
             const vLine = document.createElementNS(svgNS, "line");
-            vLine.setAttribute("x1", i); vLine.setAttribute("y1", 0);
-            vLine.setAttribute("x2", i); vLine.setAttribute("y2", moduleCount);
-            vLine.setAttribute("stroke", "rgba(0,0,0,0.05)"); vLine.setAttribute("stroke-width", 0.02);
+            vLine.setAttribute("x1", i.toString()); vLine.setAttribute("y1", "0");
+            vLine.setAttribute("x2", i.toString()); vLine.setAttribute("y2", moduleCount.toString());
+            vLine.setAttribute("stroke", "rgba(0,0,0,0.05)"); vLine.setAttribute("stroke-width", "0.02");
             svg.appendChild(vLine);
         }
 
@@ -537,22 +468,21 @@
             }
         }
 
-        // ===== ДОДАЄМО МАСКУ (перед логотипом, щоб лого був поверх) =====
-        const maskType = document.getElementById('maskType').value;
-        const maskSize = parseInt(document.getElementById('maskSize').value);
-        const maskOpacity = parseFloat(document.getElementById('maskOpacity').value);
-        drawMask(svg, moduleCount, maskType, maskSize, maskOpacity, finalColor, finalBg);
-
         // Додавання логотипу (накладання поверх)
         if (currentLogo) {
-            const logoElem = document.createElementNS(svgNS, "image");
-            logoElem.setAttributeNS("http://www.w3.org/1999/xlink", "href", currentLogo);
             const logoSizeUnits = moduleCount * logoSize;
-            logoElem.setAttribute("width", logoSizeUnits);
-            logoElem.setAttribute("height", logoSizeUnits);
-            logoElem.setAttribute("x", (moduleCount - logoSizeUnits) / 2);
-            logoElem.setAttribute("y", (moduleCount - logoSizeUnits) / 2);
-            svg.appendChild(logoElem);
+            const center = (moduleCount - logoSizeUnits) / 2;
+            if (isNaN(logoSizeUnits) || isNaN(center) || logoSizeUnits <= 0) {
+                console.error('Invalid logo dimensions:', { moduleCount, logoSize, logoSizeUnits, center });
+            } else {
+                const logoElem = document.createElementNS(svgNS, "image");
+                logoElem.setAttributeNS("http://www.w3.org/1999/xlink", "href", currentLogo);
+                logoElem.setAttribute("width", logoSizeUnits.toString());
+                logoElem.setAttribute("height", logoSizeUnits.toString());
+                logoElem.setAttribute("x", center.toString());
+                logoElem.setAttribute("y", center.toString());
+                svg.appendChild(logoElem);
+            }
         }
 
         // Відображення в контейнері
@@ -595,22 +525,6 @@
         document.getElementById('crossType').value = preset.crossType;
         document.getElementById('dotSize').value = 0.9;
         document.getElementById('logoSize').value = 0.25;
-        // Скидання маски до значень за замовчуванням
-        document.getElementById('maskType').value = 'none';
-        document.getElementById('maskSize').value = 4;
-        document.getElementById('maskOpacity').value = 0.7;
-        document.getElementById('maskSizeValue').textContent = '4';
-        document.getElementById('maskOpacityValue').textContent = '70';
-        generateQR();
-    }
-    // Додаткові функції для оновлення відображення повзунків маски
-    function updateMaskSize() {
-        document.getElementById('maskSizeValue').textContent = document.getElementById('maskSize').value;
-        generateQR();
-    }
-    function updateMaskOpacity() {
-        const val = document.getElementById('maskOpacity').value;
-        document.getElementById('maskOpacityValue').textContent = Math.round(val * 100);
         generateQR();
     }
     // ==================== ЗАВАНТАЖЕННЯ ====================
@@ -630,6 +544,10 @@
             a.href = canvas.toDataURL('image/png');
             a.download = 'qr-vyshyvanka-' + Date.now() + '.png';
             a.click();
+        };
+        img.onerror = (error) => {
+            console.error('Error loading SVG for PNG:', error);
+            alert('Помилка при створенні PNG. Спробуйте завантажити SVG.');
         };
     }
     function downloadSVG() {
@@ -653,6 +571,10 @@
             document.getElementById('fileName').classList.add('show');
             generateQR();
         };
+        reader.onerror = (error) => {
+            console.error('Error reading logo file:', error);
+            alert('Помилка завантаження логотипу.');
+        };
         reader.readAsDataURL(file);
     });
     // ==================== LIVE-ОНОВЛЕННЯ ====================
@@ -664,16 +586,15 @@
     document.getElementById('logoSize').addEventListener('input', generateQR);
     // ==================== ІНІЦІАЛІЗАЦІЯ ====================
     window.addEventListener('load', () => {
-        setTimeout(() => {
-            if (typeof QRCode !== 'undefined') {
-                generateQR();
-            } else {
-                const script = document.createElement('script');
-                script.src = 'https://davidshimjs.github.io/qrcodejs/qrcode.min.js';
-                script.onload = generateQR;
-                document.head.appendChild(script);
-            }
-        }, 300);
+        if (typeof QRCode !== 'undefined') {
+            generateQR();
+        } else {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+            script.onload = generateQR;
+            script.onerror = () => console.error('Failed to load QRCode library');
+            document.head.appendChild(script);
+        }
     });
     console.log('%c🇺🇦 QR Вишиванка готовий!', 'color: #c41e3a; font-weight: bold;');
     console.log('%c💡 Хрестики мають бути видно при розмірі 85%+', 'color: #94a3b8;');
